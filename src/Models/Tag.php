@@ -2,12 +2,27 @@
 
 namespace Kurt\Modules\Blog\Models;
 
+use Cviebrock\EloquentSluggable\SluggableInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Kurt\Modules\Blog\Observers\TagObserverTrait;
 use Kurt\Modules\Blog\Traits\SluggableTrait;
 use Kurt\Modules\Blog\Traits\CountFromRelationTrait;
 
+/**
+ * Kurt\Modules\Blog\Models\Tag
+ *
+ * @property integer $id
+ * @property string $name
+ * @property string $slug
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property \Carbon\Carbon $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Kurt\Modules\Blog\Models\Post[] $posts
+ * @property-read \Kurt\Modules\Blog\Models\Post $postsCount
+ * @property-read mixed $posts_count
+ * @method static \Illuminate\Database\Query\Builder|\Kurt\Modules\Blog\Models\Tag whereSlug($slug)
+ */
 class Tag extends Model implements SluggableInterface
 {
     use CountFromRelationTrait;
@@ -50,7 +65,7 @@ class Tag extends Model implements SluggableInterface
 
     public function posts()
     {
-        return $this->belongsToMany(Post::class, 'post_tag', 'post_id', 'tag_id');
+        return $this->belongsToMany(Post::class, 'blog_post_tag', 'tag_id', 'post_id');
     }
 
     public function postsCount()

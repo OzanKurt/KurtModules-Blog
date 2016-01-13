@@ -6,19 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * Class Comment
- * @package Kurt\Modules\Blog\Models
- * @property int id
- * @property string content
- * @property int user_id
- * @property int post_id
- * @property \Carbon\Carbon created_at
- * @property \Carbon\Carbon updated_at
- * @property \Carbon\Carbon deleted_at
- * @property-read \Illuminate\Support\Collection posts
- * @property-read \Illuminate\Contracts\Auth\Authenticatable user
+ * Kurt\Modules\Blog\Models\Comment
+ *
+ * @property integer $id
+ * @property string $content
+ * @property integer $user_id
+ * @property integer $post_id
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property \Carbon\Carbon $deleted_at
+ * @property-read \Kurt\Modules\Blog\Models\Post $posts
+ * @property-read \App\User $user
  */
-class Comment extends Model implements SluggableInterface 
+class Comment extends Model
 {
     use SoftDeletes;
 

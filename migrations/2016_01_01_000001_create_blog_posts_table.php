@@ -21,26 +21,22 @@ class CreateBlogPostsTable extends Migration
             
             $table->text('content');
 
-            $table->integer('user_id')->unsigned()->nullable();
-
             $userModel = app(config('auth.providers.users.model'));
 
+            $table->integer('user_id')->unsigned()->nullable();
             $table->foreign('user_id')
                 ->references($userModel->getKeyName())
                 ->on($userModel->getTable())
                 ->onDelete('cascade');
 
             $table->integer('category_id')->unsigned()->nullable();
-
             $table->foreign('category_id')
                 ->references('id')
-                ->on('categories')
+                ->on('blog_categories')
                 ->onDelete('cascade');
 
             $table->timestamps();
             $table->softDeletes();
-
-
         });
     }
 

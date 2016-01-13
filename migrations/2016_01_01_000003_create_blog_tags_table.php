@@ -19,6 +19,8 @@ class CreateBlogTagsTable extends Migration
             $table->string('name');
             $table->string('slug')->index();
 
+            $table->string('color');
+
             $table->timestamps();
             $table->softDeletes();
         });

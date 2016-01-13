@@ -1,11 +1,11 @@
 <?php
 
-namespace Kurt\Modules\Blog\Repositories\Posts;
+namespace Kurt\Modules\Blog\Repositories\Tags;
 
-use Kurt\Modules\Blog\Models\Post;
-use Kurt\Modules\Blog\Repositories\Contracts\PostsRepository;
+use Kurt\Modules\Blog\Models\Tag;
+use Kurt\Modules\Blog\Repositories\Contracts\TagsRepository;
 
-class EloquentPostsRepository implements PostsRepository
+class EloquentTagsRepository implements TagsRepository
 {
 
     /**
@@ -15,7 +15,7 @@ class EloquentPostsRepository implements PostsRepository
      */
     protected $model;
 
-    function __construct(Post $model)
+    function __construct(Tag $model)
     {
         $this->model = $model;
     }
@@ -32,6 +32,32 @@ class EloquentPostsRepository implements PostsRepository
     }
 
     /**
+     * Find a row by it's id.
+     *
+     * @param $slug
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function findBySlug($slug)
+    {
+        return $this->model->findBySlug($slug);
+    }
+
+    /**
+     * Find a row by it's id with it's posts.
+     *
+     * @param $slug
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function findBySlugWithPosts($slug)
+    {
+        $tag = $this->findBySlug($slug);
+
+        $tag->load(['posts.category', 'posts.tags']);
+
+        return $tag;
+    }
+
+    /**
      * Find a row by it's id with it's category.
      *
      * @param $id
@@ -40,17 +66,6 @@ class EloquentPostsRepository implements PostsRepository
     public function findByIdWithCategory($id)
     {
         return $this->model->with(['category'])->find($id);
-    }
-
-    /**
-     * Find a row by it's id with it's category and tags.
-     *
-     * @param $id
-     * @return \Illuminate\Database\Eloquent\Model
-     */
-    public function findByIdWithCategoryAndTags($id)
-    {
-        return $this->model->with(['category', 'tags'])->find($id);
     }
 
     /**
@@ -74,16 +89,6 @@ class EloquentPostsRepository implements PostsRepository
     }
 
     /**
-     * Get all posts with it's category and tags.
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    public function getAllWithCategoryAndTags()
-    {
-        return $this->model->with(['category', 'tags'])->get();
-    }
-
-    /**
      * Paginate all posts.
      *
      * @param integer $postsPerPage
@@ -94,7 +99,6 @@ class EloquentPostsRepository implements PostsRepository
         return $this->model->paginate($postsPerPage);
     }
 
-
     /**
      * Paginate all posts with it's category.
      *
@@ -103,24 +107,9 @@ class EloquentPostsRepository implements PostsRepository
      */
     public function paginateAllWithCategory($postsPerPage)
     {
-        $posts = $this->paginateAll($postsPerPage);
+        $posts = $this->model->paginate($postsPerPage);
 
         $posts->load(['category']);
-
-        return $posts;
-    }
-
-    /**
-     * Paginate all posts with it's category and tags.
-     *
-     * @param integer $postsPerPage
-     * @return \Illuminate\Support\Collection
-     */
-    public function paginateAllWithCategoryAndTags($postsPerPage)
-    {
-        $posts = $this->paginateAll($postsPerPage);
-
-        $posts->load(['category', 'tags']);
 
         return $posts;
     }

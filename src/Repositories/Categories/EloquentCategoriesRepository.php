@@ -1,6 +1,6 @@
 <?php
 
-namespace Kurt\Modules\Blog\Repositories\Posts;
+namespace Kurt\Modules\Blog\Repositories\Categories;
 
 use Kurt\Modules\Blog\Models\Category;
 use Kurt\Modules\Blog\Repositories\Contracts\CategoriesRepository;

@@ -10,15 +10,19 @@ use Kurt\Modules\Blog\Traits\CountFromRelationTrait;
 use Kurt\Modules\Blog\Traits\SluggableTrait;
 
 /**
- * Class Category
- * @package Kurt\Modules\Blog\Models
- * @property int id
- * @property string name
- * @property string slug
- * @property \Carbon\Carbon created_at
- * @property \Carbon\Carbon updated_at
- * @property \Carbon\Carbon deleted_at
- * @property int postCount
+ * Kurt\Modules\Blog\Models\Category
+ *
+ * @property integer $id
+ * @property string $name
+ * @property string $slug
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property \Carbon\Carbon $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Kurt\Modules\Blog\Models\Post[] $posts
+ * @property-read \Kurt\Modules\Blog\Models\Post $postsCount
+ * @property-read mixed $posts_count
+ * @property-read \Kurt\Modules\Blog\Models\Post $latestPost
+ * @method static \Illuminate\Database\Query\Builder|\Kurt\Modules\Blog\Models\Category whereSlug($slug)
  */
 class Category extends Model implements SluggableInterface
 {

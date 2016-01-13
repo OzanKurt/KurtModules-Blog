@@ -10,23 +10,27 @@ use Kurt\Modules\Blog\Traits\CountFromRelationTrait;
 use Kurt\Modules\Blog\Traits\SluggableTrait;
 
 /**
- * Class Post
- * @package Kurt\Modules\Blog\Models
- * @property int id
- * @property string title
- * @property string slug
- * @property string content
- * @property int user_id
- * @property \Carbon\Carbon created_at
- * @property \Carbon\Carbon updated_at
- * @property \Carbon\Carbon deleted_at
- * @property Category category
- * @property \Illuminate\Contracts\Auth\Authenticatable user
- * @property-read \Illuminate\Support\Collection comments
- * @property-read int blogCommentsCount
- * @property Comment latestBlogComment
- * @property-read \Illuminate\Support\Collection tags
- * @property-read int tagsCount
+ * Kurt\Modules\Blog\Models\Post
+ *
+ * @property integer $id
+ * @property string $title
+ * @property string $slug
+ * @property string $content
+ * @property integer $user_id
+ * @property integer $category_id
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property \Carbon\Carbon $deleted_at
+ * @property-read \Kurt\Modules\Blog\Models\Category $category
+ * @property-read \App\User $user
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Kurt\Modules\Blog\Models\Comment[] $comments
+ * @property-read \Kurt\Modules\Blog\Models\Comment $commentsCount
+ * @property-read mixed $comments_count
+ * @property-read \Kurt\Modules\Blog\Models\Comment $latestComment
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Kurt\Modules\Blog\Models\Tag[] $tags
+ * @property-read \Kurt\Modules\Blog\Models\Tag $tagsCount
+ * @property-read mixed $tags_count
+ * @method static \Illuminate\Database\Query\Builder|\Kurt\Modules\Blog\Models\Post whereSlug($slug)
  */
 class Post extends Model implements SluggableInterface
 {
@@ -71,6 +75,8 @@ class Post extends Model implements SluggableInterface
     protected $dates = ['deleted_at'];
 
     /**
+     * Todo: [__description]
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function category()
@@ -79,16 +85,20 @@ class Post extends Model implements SluggableInterface
     }
 
     /**
+     * Todo: [__description]
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
         $userModelClass = config('auth.providers.users.model');
         $userModel = app($userModelClass);
-        return $this->belongsTo($userModelClass, 'user_id', $userModel->getKey());
+        return $this->belongsTo($userModelClass, 'user_id', $userModel->getKeyName());
     }
 
     /**
+     * Todo: [__description]
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function comments()
@@ -97,6 +107,8 @@ class Post extends Model implements SluggableInterface
     }
 
     /**
+     * Todo: [__description]
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function commentsCount()
@@ -107,6 +119,8 @@ class Post extends Model implements SluggableInterface
     }
 
     /**
+     * Todo: [__description]
+     *
      * @return int
      */
     public function getCommentsCountAttribute()
@@ -115,6 +129,8 @@ class Post extends Model implements SluggableInterface
     }
 
     /**
+     * Todo: [__description]
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function latestComment()
@@ -123,14 +139,18 @@ class Post extends Model implements SluggableInterface
     }
 
     /**
+     * Todo: [__description]
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function tags()
     {
-        return $this->belongsToMany(Tag::class, 'post_tag', 'tag_id', 'post_id');
+        return $this->belongsToMany(Tag::class, 'blog_post_tag', 'post_id', 'tag_id');
     }
 
     /**
+     * Todo: [__description]
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function tagsCount()
@@ -141,6 +161,8 @@ class Post extends Model implements SluggableInterface
     }
 
     /**
+     * Todo: [__description]
+     *
      * @return int
      */
     public function getTagsCountAttribute()

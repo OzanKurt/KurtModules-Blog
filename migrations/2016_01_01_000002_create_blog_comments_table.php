@@ -18,23 +18,22 @@ class CreateBlogCommentsTable extends Migration
             
             $table->text('content');
 
-            $table->integer('user_id')->unsigned();
-            $table->integer('post_id')->unsigned();
-
-            $table->timestamps();
-            $table->softDeletes();
-
             $userModel = app(config('auth.providers.users.model'));
 
+            $table->integer('user_id')->unsigned();
             $table->foreign('user_id')
                 ->references($userModel->getKeyName())
                 ->on($userModel->getTable())
                 ->onDelete('cascade');
 
+            $table->integer('post_id')->unsigned();
             $table->foreign('post_id')
                 ->references('id')
                 ->on('blog_posts')
                 ->onDelete('cascade');
+
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

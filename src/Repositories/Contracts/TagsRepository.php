@@ -2,8 +2,7 @@
 
 namespace Kurt\Modules\Blog\Repositories\Contracts;
 
-
-interface PostsRepository
+interface TagsRepository
 {
 
     /**
@@ -15,20 +14,28 @@ interface PostsRepository
     public function findById($id);
 
     /**
+     * Find a row by it's id.
+     *
+     * @param $slug
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function findBySlug($slug);
+
+    /**
+     * Find a row by it's id with it's posts.
+     *
+     * @param $slug
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function findBySlugWithPosts($slug);
+
+    /**
      * Find a row by it's id with it's category.
      *
      * @param $id
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function findByIdWithCategory($id);
-
-    /**
-     * Find a row by it's id with it's category and tags.
-     *
-     * @param $id
-     * @return \Illuminate\Database\Eloquent\Model
-     */
-    public function findByIdWithCategoryAndTags($id);
 
     /**
      * Get all posts.
@@ -45,13 +52,6 @@ interface PostsRepository
     public function getAllWithCategory();
 
     /**
-     * Get all posts with it's category and tags.
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    public function getAllWithCategoryAndTags();
-
-    /**
      * Paginate all posts.
      *
      * @param integer $postsPerPage
@@ -66,13 +66,5 @@ interface PostsRepository
      * @return \Illuminate\Support\Collection
      */
     public function paginateAllWithCategory($postsPerPage);
-
-    /**
-     * Paginate all posts with it's category and tags.
-     *
-     * @param integer $postsPerPage
-     * @return \Illuminate\Support\Collection
-     */
-    public function paginateAllWithCategoryAndTags($postsPerPage);
 
 }

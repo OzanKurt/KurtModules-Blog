@@ -8,6 +8,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Kurt\Modules\Blog\Repositories\Contracts\CategoriesRepository;
 use Kurt\Modules\Blog\Repositories\Contracts\PostsRepository;
+use Kurt\Modules\Blog\Repositories\Contracts\TagsRepository;
 
 class BlogController extends BaseController
 {
@@ -16,18 +17,22 @@ class BlogController extends BaseController
     protected $blogCategoriesRepository;
     // protected $blogCommentsRepository;
     protected $blogPostsRepository;
-    // protected $blogTagsRepository;
+    protected $blogTagsRepository;
 
     /**
      * [__construct description]
-     * @param PostsRepository $blogPostsRepository
+     *
      * @param CategoriesRepository $blogCategoriesRepository
+     * @param PostsRepository $blogPostsRepository
+     * @param TagsRepository $blogTagsRepository
      */
     public function __construct(
         CategoriesRepository $blogCategoriesRepository,
-        PostsRepository $blogPostsRepository
+        PostsRepository $blogPostsRepository,
+        TagsRepository $blogTagsRepository
     ) {
         $this->blogCategoriesRepository = $blogCategoriesRepository;
-        $this->blogPostsRepository = $blogPostsRepository;
+        $this->blogPostsRepository      = $blogPostsRepository;
+        $this->blogTagsRepository       = $blogTagsRepository;
     }
 }
