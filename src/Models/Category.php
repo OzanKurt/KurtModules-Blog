@@ -2,12 +2,12 @@
 
 namespace Kurt\Modules\Blog\Models;
 
+use Cviebrock\EloquentSluggable\SluggableInterface;
+use Cviebrock\EloquentSluggable\SluggableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Cviebrock\EloquentSluggable\SluggableInterface;
-use Kurt\Modules\Blog\Observers\CategoryObserverTrait;
+use Kurt\Modules\Blog\Observers\CategoryObserver;
 use Kurt\Modules\Blog\Traits\CountFromRelationTrait;
-use Kurt\Modules\Blog\Traits\SluggableTrait;
 
 /**
  * Kurt\Modules\Blog\Models\Category
@@ -27,7 +27,6 @@ use Kurt\Modules\Blog\Traits\SluggableTrait;
 class Category extends Model implements SluggableInterface
 {
     use CountFromRelationTrait;
-    use CategoryObserverTrait;
     use SluggableTrait;
     use SoftDeletes;
 
@@ -38,6 +37,7 @@ class Category extends Model implements SluggableInterface
      */
     protected $sluggable = [
         'build_from' => 'name',
+        'on_update' => true,
     ];
 
     /**
@@ -65,8 +65,21 @@ class Category extends Model implements SluggableInterface
     protected $dates = ['deleted_at'];
 
     /**
-     * [posts description]
-     * @return [type] [description]
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        Category::observe(new CategoryObserver());
+    }
+
+    /**
+     * Posts of the category.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function posts()
     {
@@ -74,8 +87,9 @@ class Category extends Model implements SluggableInterface
     }
 
     /**
-     * [postsCount description]
-     * @return [type] [description]
+     * Posts count as hasOne relation.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function postsCount()
     {
@@ -85,8 +99,9 @@ class Category extends Model implements SluggableInterface
     }
 
     /**
-     * [getPostsCountAttribute description]
-     * @return [type] [description]
+     * Posts count of the category.
+     *
+     * @return int
      */
     public function getPostsCountAttribute()
     {
@@ -94,8 +109,9 @@ class Category extends Model implements SluggableInterface
     }
 
     /**
-     * [latestPost description]
-     * @return [type] [description]
+     * Latest post of the category.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function latestPost()
     {

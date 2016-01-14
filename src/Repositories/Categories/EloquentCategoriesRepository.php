@@ -11,10 +11,15 @@ class EloquentCategoriesRepository implements CategoriesRepository
     /**
      * Model instance.
      *
-     * @var \Illuminate\Database\Eloquent\Model
+     * @var Category
      */
     protected $model;
 
+    /**
+     * EloquentCategoriesRepository constructor.
+     *
+     * @param Category $model
+     */
     function __construct(Category $model)
     {
         $this->model = $model;
@@ -24,7 +29,7 @@ class EloquentCategoriesRepository implements CategoriesRepository
      * Find a row by it's id.
      *
      * @param $id
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return Category
      */
     public function findById($id)
     {
@@ -35,7 +40,7 @@ class EloquentCategoriesRepository implements CategoriesRepository
      * Find a row by it's slug.
      *
      * @param $slug
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return Category
      */
     public function findBySlug($slug)
     {
@@ -63,13 +68,12 @@ class EloquentCategoriesRepository implements CategoriesRepository
     }
 
     /**
-     * Get all posts.
+     * Get all categories ordered by their popularity.
      *
      * @return \Illuminate\Support\Collection
      */
     public function getAllOrderByPopularity()
     {
-        return $this->model->leftJoin('blog_posts', 'blog_posts.category_id', '=', 'blog_categories.id')
-            ->get();
+        // Todo: Get all categories ordered by their popularity.
     }
 }

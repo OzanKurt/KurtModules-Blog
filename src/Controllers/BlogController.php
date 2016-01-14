@@ -15,12 +15,12 @@ class BlogController extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     protected $blogCategoriesRepository;
-    // protected $blogCommentsRepository;
+//    protected $blogCommentsRepository;
     protected $blogPostsRepository;
     protected $blogTagsRepository;
 
     /**
-     * [__construct description]
+     * Ready up blog repositories.
      *
      * @param CategoriesRepository $blogCategoriesRepository
      * @param PostsRepository $blogPostsRepository

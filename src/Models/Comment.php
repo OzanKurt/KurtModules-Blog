@@ -4,6 +4,7 @@ namespace Kurt\Modules\Blog\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Kurt\Modules\Blog\Observers\CommentObserver;
 
 /**
  * Kurt\Modules\Blog\Models\Comment
@@ -47,14 +48,27 @@ class Comment extends Model
      */
     protected $dates = ['deleted_at'];
 
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        Comment::observe(new CommentObserver());
+    }
+
     public function posts()
     {
         return $this->belongsTo(Post::class, 'post_id', 'id');
     }
 
     /**
-     * [user description]
-     * @return [type] [description]
+     * Todo: Description.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {

@@ -3,11 +3,11 @@
 namespace Kurt\Modules\Blog\Models;
 
 use Cviebrock\EloquentSluggable\SluggableInterface;
+use Cviebrock\EloquentSluggable\SluggableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Kurt\Modules\Blog\Observers\PostObserverTrait;
+use Kurt\Modules\Blog\Observers\PostObserver;
 use Kurt\Modules\Blog\Traits\CountFromRelationTrait;
-use Kurt\Modules\Blog\Traits\SluggableTrait;
 
 /**
  * Kurt\Modules\Blog\Models\Post
@@ -35,7 +35,6 @@ use Kurt\Modules\Blog\Traits\SluggableTrait;
 class Post extends Model implements SluggableInterface
 {
     use CountFromRelationTrait;
-    use PostObserverTrait;
     use SluggableTrait;
     use SoftDeletes;
 
@@ -46,6 +45,7 @@ class Post extends Model implements SluggableInterface
      */
     protected $sluggable = [
         'build_from' => 'title',
+        'on_update' => true,
     ];
 
     /**
@@ -75,7 +75,19 @@ class Post extends Model implements SluggableInterface
     protected $dates = ['deleted_at'];
 
     /**
-     * Todo: [__description]
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        Post::observe(new PostObserver());
+    }
+
+    /**
+     * Todo: Description.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -85,7 +97,7 @@ class Post extends Model implements SluggableInterface
     }
 
     /**
-     * Todo: [__description]
+     * Todo: Description.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -97,7 +109,7 @@ class Post extends Model implements SluggableInterface
     }
 
     /**
-     * Todo: [__description]
+     * Todo: Description.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -107,7 +119,7 @@ class Post extends Model implements SluggableInterface
     }
 
     /**
-     * Todo: [__description]
+     * Todo: Description.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
@@ -119,7 +131,7 @@ class Post extends Model implements SluggableInterface
     }
 
     /**
-     * Todo: [__description]
+     * Todo: Description.
      *
      * @return int
      */
@@ -129,7 +141,7 @@ class Post extends Model implements SluggableInterface
     }
 
     /**
-     * Todo: [__description]
+     * Todo: Description.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
@@ -139,7 +151,7 @@ class Post extends Model implements SluggableInterface
     }
 
     /**
-     * Todo: [__description]
+     * Todo: Description.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
@@ -149,7 +161,7 @@ class Post extends Model implements SluggableInterface
     }
 
     /**
-     * Todo: [__description]
+     * Todo: Description.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
@@ -161,7 +173,7 @@ class Post extends Model implements SluggableInterface
     }
 
     /**
-     * Todo: [__description]
+     * Todo: Description.
      *
      * @return int
      */

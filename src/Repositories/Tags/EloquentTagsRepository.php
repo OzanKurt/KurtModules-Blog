@@ -11,7 +11,7 @@ class EloquentTagsRepository implements TagsRepository
     /**
      * Model instance.
      *
-     * @var \Illuminate\Database\Eloquent\Model
+     * @var Tag
      */
     protected $model;
 
@@ -24,7 +24,7 @@ class EloquentTagsRepository implements TagsRepository
      * Find a row by it's id.
      *
      * @param $id
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return Tag
      */
     public function findById($id)
     {
@@ -35,7 +35,7 @@ class EloquentTagsRepository implements TagsRepository
      * Find a row by it's id.
      *
      * @param $slug
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return Tag
      */
     public function findBySlug($slug)
     {
@@ -46,7 +46,7 @@ class EloquentTagsRepository implements TagsRepository
      * Find a row by it's id with it's posts.
      *
      * @param $slug
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return Tag
      */
     public function findBySlugWithPosts($slug)
     {
@@ -61,7 +61,7 @@ class EloquentTagsRepository implements TagsRepository
      * Find a row by it's id with it's category.
      *
      * @param $id
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return Tag
      */
     public function findByIdWithCategory($id)
     {
@@ -92,7 +92,7 @@ class EloquentTagsRepository implements TagsRepository
      * Paginate all posts.
      *
      * @param integer $postsPerPage
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function paginateAll($postsPerPage)
     {
@@ -103,7 +103,7 @@ class EloquentTagsRepository implements TagsRepository
      * Paginate all posts with it's category.
      *
      * @param integer $postsPerPage
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function paginateAllWithCategory($postsPerPage)
     {

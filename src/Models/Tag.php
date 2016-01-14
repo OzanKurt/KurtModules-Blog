@@ -3,10 +3,10 @@
 namespace Kurt\Modules\Blog\Models;
 
 use Cviebrock\EloquentSluggable\SluggableInterface;
+use Cviebrock\EloquentSluggable\SluggableTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Kurt\Modules\Blog\Observers\TagObserverTrait;
-use Kurt\Modules\Blog\Traits\SluggableTrait;
+use Kurt\Modules\Blog\Observers\TagObserver;
 use Kurt\Modules\Blog\Traits\CountFromRelationTrait;
 
 /**
@@ -26,7 +26,6 @@ use Kurt\Modules\Blog\Traits\CountFromRelationTrait;
 class Tag extends Model implements SluggableInterface
 {
     use CountFromRelationTrait;
-    use TagObserverTrait;
     use SluggableTrait;
     use SoftDeletes;
 
@@ -37,6 +36,7 @@ class Tag extends Model implements SluggableInterface
      */
     protected $sluggable = [
         'build_from' => 'name',
+        'on_update' => true,
     ];
 
     /**
@@ -63,11 +63,23 @@ class Tag extends Model implements SluggableInterface
      */
     protected $dates = ['deleted_at'];
 
-    public function posts()
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    public static function boot()
     {
-        return $this->belongsToMany(Post::class, 'blog_post_tag', 'tag_id', 'post_id');
+        parent::boot();
+
+        Tag::observe(new TagObserver());
     }
 
+    /**
+     * Todo: Description.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function postsCount()
     {
         return $this->hasOne(Post::class)
@@ -75,13 +87,33 @@ class Tag extends Model implements SluggableInterface
             ->groupBy('tag_id');
     }
 
+    /**
+     * Todo: Description.
+     *
+     * @return int
+     */
     public function getPostsCountAttribute()
     {
         return $this->getCountFromRelation('postsCount');
     }
 
+    /**
+     * Todo: Description.
+     *
+     * @return mixed
+     */
     public function latestPost()
     {
-        return $this->posts()->take(1)->latest();
+        return $this->posts()->latest()->first();
+    }
+
+    /**
+     * Todo: Description.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function posts()
+    {
+        return $this->belongsToMany(Post::class, 'blog_post_tag', 'tag_id', 'post_id');
     }
 }

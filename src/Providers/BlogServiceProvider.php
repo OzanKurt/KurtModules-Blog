@@ -4,6 +4,9 @@ namespace Kurt\Modules\Blog\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
+use Kurt\Modules\Blog\Models\Category;
+use Kurt\Modules\Blog\Observers\CategoryObserver;
+use Kurt\Modules\Blog\Repositories\Categories\CachingCategoriesRepository;
 use Kurt\Modules\Blog\Repositories\Categories\EloquentCategoriesRepository;
 use Kurt\Modules\Blog\Repositories\Contracts\CategoriesRepository;
 use Kurt\Modules\Blog\Repositories\Contracts\PostsRepository;
@@ -99,7 +102,16 @@ class BlogServiceProvider extends ServiceProvider
      */
     protected function registerRepositories()
     {
-        $this->app->singleton(CategoriesRepository::class, EloquentCategoriesRepository::class);
+        $this->app->singleton(CategoriesRepository::class, function () {
+            $eloquentCategoriesRepository = new EloquentCategoriesRepository(new Category);
+
+            $cachingCategoriesRepository = new CachingCategoriesRepository(
+                $this->app->make('cache.store'),
+                $eloquentCategoriesRepository
+            );
+
+            return $cachingCategoriesRepository;
+        });
         $this->app->singleton(PostsRepository::class, EloquentPostsRepository::class);
         $this->app->singleton(TagsRepository::class, EloquentTagsRepository::class);
     }

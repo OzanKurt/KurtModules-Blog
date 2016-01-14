@@ -11,7 +11,7 @@ class EloquentPostsRepository implements PostsRepository
     /**
      * Model instance.
      *
-     * @var \Illuminate\Database\Eloquent\Model
+     * @var Post
      */
     protected $model;
 
@@ -24,7 +24,7 @@ class EloquentPostsRepository implements PostsRepository
      * Find a row by it's id.
      *
      * @param $id
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return Post
      */
     public function findById($id)
     {
@@ -35,7 +35,7 @@ class EloquentPostsRepository implements PostsRepository
      * Find a row by it's id with it's category.
      *
      * @param $id
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return Post
      */
     public function findByIdWithCategory($id)
     {
@@ -46,7 +46,7 @@ class EloquentPostsRepository implements PostsRepository
      * Find a row by it's id with it's category and tags.
      *
      * @param $id
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return Post
      */
     public function findByIdWithCategoryAndTags($id)
     {
@@ -87,7 +87,7 @@ class EloquentPostsRepository implements PostsRepository
      * Paginate all posts.
      *
      * @param integer $postsPerPage
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function paginateAll($postsPerPage)
     {
@@ -99,7 +99,7 @@ class EloquentPostsRepository implements PostsRepository
      * Paginate all posts with it's category.
      *
      * @param integer $postsPerPage
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function paginateAllWithCategory($postsPerPage)
     {
@@ -114,7 +114,7 @@ class EloquentPostsRepository implements PostsRepository
      * Paginate all posts with it's category and tags.
      *
      * @param integer $postsPerPage
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function paginateAllWithCategoryAndTags($postsPerPage)
     {
