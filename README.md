@@ -2,11 +2,11 @@
 
 Todo: Add package description.
 
-#### Contribution guidelines
+### Contribution guidelines
 
 Todo: Add contribution guidelines.
 
-#### Who do I talk to?
+### Who do I talk to?
 
 **Owner**: 
 
