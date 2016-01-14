@@ -101,11 +101,12 @@ class Category extends Model implements SluggableInterface
     /**
      * Posts count of the category.
      *
+     * @param $value
      * @return int
      */
-    public function getPostsCountAttribute()
+    public function getPostsCountAttribute($value)
     {
-        return $this->getCountFromRelation('postsCount');
+        return $this->getCountFromRelation('postsCount', $value);
     }
 
     /**

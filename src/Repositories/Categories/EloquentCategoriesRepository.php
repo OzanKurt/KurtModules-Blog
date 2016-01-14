@@ -74,13 +74,11 @@ class EloquentCategoriesRepository implements CategoriesRepository
      */
     public function getAllOrderByPopularity()
     {
-        $categories = $this->model->selectRaw('blog_categories.*, count(`blog_posts`.`id`) as blog_posts_count')
+        $categories = $this->model->selectRaw('blog_categories.*, count(`blog_posts`.`id`) as postsCount')
             ->join('blog_posts', 'blog_posts.category_id', '=', 'blog_categories.id')
             ->groupBy('blog_categories.id')
-            ->orderBy('blog_posts_count', 'desc')
+            ->orderBy('postsCount', 'desc')
             ->get();
-
-        $categories->load(['postsCount']);
 
         return $categories;
     }

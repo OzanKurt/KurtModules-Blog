@@ -10,8 +10,12 @@ trait CountFromRelationTrait
      * @param $relationName
      * @return int
      */
-    private function getCountFromRelation($relationName)
+    private function getCountFromRelation($relationName, $value)
     {
+        if (!is_null($value)) {
+            return $value;
+        }
+
         if (!$this->relationLoaded($relationName)) {
             $this->load($relationName);
         }
