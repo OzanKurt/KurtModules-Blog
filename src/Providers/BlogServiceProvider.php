@@ -105,6 +105,8 @@ class BlogServiceProvider extends ServiceProvider
         $this->app->singleton(CategoriesRepository::class, function () {
             $eloquentCategoriesRepository = new EloquentCategoriesRepository(new Category);
 
+            return $eloquentCategoriesRepository;
+
             $cachingCategoriesRepository = new CachingCategoriesRepository(
                 $this->app->make('cache.store'),
                 $eloquentCategoriesRepository
