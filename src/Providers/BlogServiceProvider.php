@@ -159,10 +159,8 @@ class BlogServiceProvider extends ServiceProvider
      */
     protected function publishConfigurations()
     {
-        // Todo: If the configurations are already published just don't! ;)
-
         $this->publishes([
-            __DIR__ . '/../../migrations' => config_path('kurt_modules_blog.php'),
+            __DIR__ . '/../../config/kurt_modules_blog.php' => config_path('kurt_modules_blog.php'),
         ], 'kurt_blog');
     }
 }
