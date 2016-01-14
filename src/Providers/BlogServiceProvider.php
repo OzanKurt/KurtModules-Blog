@@ -40,9 +40,7 @@ class BlogServiceProvider extends ServiceProvider
     {
         $this->initConfig();
 
-        $this->publishMigrations();
-
-        $this->publishRoutes();
+        $this->publishVendor();
 
         $this->registerRepositories();
     }
@@ -58,41 +56,17 @@ class BlogServiceProvider extends ServiceProvider
     }
 
     /**
-     * Publish migrations.
+     * Publish required files.
      *
      * @return void
      */
-    protected function publishMigrations()
+    protected function publishVendor()
     {
-        // Todo: If the migrations are already published just don't! ;)
+        $this->publishConfigurations();
 
-        $this->publishes([
-            __DIR__ . '/../../migrations' => base_path('database/migrations'),
-        ], 'kurt_blog');
-    }
+        $this->publishRoutes();
 
-    /**
-     * Publish routes.
-     *
-     * @return void
-     */
-    protected function publishRoutes()
-    {
-        // Todo: If the routes are already published just don't! ;)
-
-        $this->publishes([
-            __DIR__ . '/../routes.php' => $this->getBlogRoutesPath(),
-        ], 'kurt_blog');
-    }
-
-    /**
-     * Get the blog_routes_path from configurations.
-     *
-     * @return string
-     */
-    private function getBlogRoutesPath()
-    {
-        return $this->app->config->get('kurt_modules_blog.blog_routes_path');
+        $this->publishMigrations();
     }
 
     /**
@@ -119,6 +93,42 @@ class BlogServiceProvider extends ServiceProvider
     }
 
     /**
+     * Publish configurations.
+     *
+     * @return void
+     */
+    protected function publishConfigurations()
+    {
+        $this->publishes([
+            __DIR__ . '/../../config/kurt_modules_blog.php' => config_path('kurt_modules_blog.php'),
+        ], ['kurt_blog', 'config']);
+    }
+
+    /**
+     * Publish routes.
+     *
+     * @return void
+     */
+    protected function publishRoutes()
+    {
+        $this->publishes([
+            __DIR__ . '/../Http/blogRoutes.php' => $this->getBlogRoutesPath(),
+        ], ['kurt_blog', 'routes']);
+    }
+
+    /**
+     * Publish migrations.
+     *
+     * @return void
+     */
+    protected function publishMigrations()
+    {
+        $this->publishes([
+            __DIR__ . '/../../migrations/' => base_path('database/migrations'),
+        ], ['kurt_blog', 'migrations']);
+    }
+
+    /**
      * Define the routes for the application.
      *
      * @param  \Illuminate\Routing\Router $router
@@ -142,6 +152,16 @@ class BlogServiceProvider extends ServiceProvider
     }
 
     /**
+     * Get the blog_routes_path from configurations.
+     *
+     * @return string
+     */
+    private function getBlogRoutesPath()
+    {
+        return $this->app->config->get('kurt_modules_blog.blog_routes_path');
+    }
+
+    /**
      * Determine if the routes file is published.
      *
      * @param $blogRoutesPath
@@ -150,17 +170,5 @@ class BlogServiceProvider extends ServiceProvider
     protected function routesArePublished($blogRoutesPath)
     {
         return file_exists($blogRoutesPath);
-    }
-
-    /**
-     * Publish configurations.
-     *
-     * @return void
-     */
-    protected function publishConfigurations()
-    {
-        $this->publishes([
-            __DIR__ . '/../../config/kurt_modules_blog.php' => config_path('kurt_modules_blog.php'),
-        ], 'kurt_blog');
     }
 }
