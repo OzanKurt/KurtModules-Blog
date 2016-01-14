@@ -78,6 +78,16 @@ class Tag extends Model implements SluggableInterface
     /**
      * Todo: Description.
      *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function posts()
+    {
+        return $this->belongsToMany(Post::class, 'blog_post_tag', 'tag_id', 'post_id');
+    }
+
+    /**
+     * Todo: Description.
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function postsCount()
@@ -105,15 +115,5 @@ class Tag extends Model implements SluggableInterface
     public function latestPost()
     {
         return $this->posts()->latest()->first();
-    }
-
-    /**
-     * Todo: Description.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function posts()
-    {
-        return $this->belongsToMany(Post::class, 'blog_post_tag', 'tag_id', 'post_id');
     }
 }
