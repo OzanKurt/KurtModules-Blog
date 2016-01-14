@@ -2,7 +2,6 @@
 
 namespace Kurt\Modules\Blog\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Kurt\Modules\Blog\Observers\CommentObserver;
 
@@ -19,7 +18,7 @@ use Kurt\Modules\Blog\Observers\CommentObserver;
  * @property-read \Kurt\Modules\Blog\Models\Post $posts
  * @property-read \App\User $user
  */
-class Comment extends Model
+class Comment extends BlogModel
 {
     use SoftDeletes;
 
@@ -46,7 +45,9 @@ class Comment extends Model
      *
      * @var array
      */
-    protected $dates = ['deleted_at'];
+    protected $dates = [
+        'deleted_at',
+    ];
 
     /**
      * The "booting" method of the model.
@@ -60,20 +61,27 @@ class Comment extends Model
         Comment::observe(new CommentObserver());
     }
 
-    public function posts()
+    /**
+     * Post of the comment.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function post()
     {
         return $this->belongsTo(Post::class, 'post_id', 'id');
     }
 
     /**
-     * Todo: Description.
+     * User that created this comment.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
-        $userModelClass = config('auth.providers.users.model');
-        $userModel = app($userModelClass);
-        return $this->belongsTo($userModelClass, 'user_id', $userModel->getKey());
+        return $this->belongsTo(
+            $this->getUserModelClass(),
+            'user_id',
+            $this->getUserModelPrimaryKey()
+        );
     }
 }

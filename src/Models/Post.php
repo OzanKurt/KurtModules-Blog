@@ -4,10 +4,8 @@ namespace Kurt\Modules\Blog\Models;
 
 use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Kurt\Modules\Blog\Observers\PostObserver;
-use Kurt\Modules\Blog\Traits\CountFromRelationTrait;
 
 /**
  * Kurt\Modules\Blog\Models\Post
@@ -32,9 +30,8 @@ use Kurt\Modules\Blog\Traits\CountFromRelationTrait;
  * @property-read mixed $tags_count
  * @method static \Illuminate\Database\Query\Builder|\Kurt\Modules\Blog\Models\Post whereSlug($slug)
  */
-class Post extends Model implements SluggableInterface
+class Post extends BlogModel implements SluggableInterface
 {
-    use CountFromRelationTrait;
     use SluggableTrait;
     use SoftDeletes;
 
@@ -72,7 +69,10 @@ class Post extends Model implements SluggableInterface
      *
      * @var array
      */
-    protected $dates = ['deleted_at'];
+    protected $dates = [
+        'published_at',
+        'deleted_at',
+    ];
 
     /**
      * The "booting" method of the model.
@@ -97,15 +97,17 @@ class Post extends Model implements SluggableInterface
     }
 
     /**
-     * Todo: Description.
+     * User that created the post.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
-        $userModelClass = config('auth.providers.users.model');
-        $userModel = app($userModelClass);
-        return $this->belongsTo($userModelClass, 'user_id', $userModel->getKeyName());
+        return $this->belongsTo(
+            $this->getUserModelClass(),
+            'user_id',
+            $this->getUserModelPrimaryKey()
+        );
     }
 
     /**

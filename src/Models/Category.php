@@ -4,10 +4,8 @@ namespace Kurt\Modules\Blog\Models;
 
 use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Kurt\Modules\Blog\Observers\CategoryObserver;
-use Kurt\Modules\Blog\Traits\CountFromRelationTrait;
 
 /**
  * Kurt\Modules\Blog\Models\Category
@@ -24,9 +22,8 @@ use Kurt\Modules\Blog\Traits\CountFromRelationTrait;
  * @property-read \Kurt\Modules\Blog\Models\Post $latestPost
  * @method static \Illuminate\Database\Query\Builder|\Kurt\Modules\Blog\Models\Category whereSlug($slug)
  */
-class Category extends Model implements SluggableInterface
+class Category extends BlogModel implements SluggableInterface
 {
-    use CountFromRelationTrait;
     use SluggableTrait;
     use SoftDeletes;
 
@@ -62,7 +59,9 @@ class Category extends Model implements SluggableInterface
      *
      * @var array
      */
-    protected $dates = ['deleted_at'];
+    protected $dates = [
+        'deleted_at',
+    ];
 
     /**
      * The "booting" method of the model.

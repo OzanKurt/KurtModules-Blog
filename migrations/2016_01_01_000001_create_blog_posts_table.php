@@ -35,6 +35,8 @@ class CreateBlogPostsTable extends Migration
                 ->on('blog_categories')
                 ->onDelete('cascade');
 
+            $table->timestamp('published_at');
+
             $table->timestamps();
             $table->softDeletes();
         });

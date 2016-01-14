@@ -4,10 +4,8 @@ namespace Kurt\Modules\Blog\Models;
 
 use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Kurt\Modules\Blog\Observers\TagObserver;
-use Kurt\Modules\Blog\Traits\CountFromRelationTrait;
 
 /**
  * Kurt\Modules\Blog\Models\Tag
@@ -23,9 +21,8 @@ use Kurt\Modules\Blog\Traits\CountFromRelationTrait;
  * @property-read mixed $posts_count
  * @method static \Illuminate\Database\Query\Builder|\Kurt\Modules\Blog\Models\Tag whereSlug($slug)
  */
-class Tag extends Model implements SluggableInterface
+class Tag extends BlogModel implements SluggableInterface
 {
-    use CountFromRelationTrait;
     use SluggableTrait;
     use SoftDeletes;
 
@@ -61,7 +58,9 @@ class Tag extends Model implements SluggableInterface
      *
      * @var array
      */
-    protected $dates = ['deleted_at'];
+    protected $dates = [
+        'deleted_at',
+    ];
 
     /**
      * The "booting" method of the model.
@@ -76,7 +75,7 @@ class Tag extends Model implements SluggableInterface
     }
 
     /**
-     * Todo: Description.
+     * Posts of the tag.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
@@ -86,7 +85,7 @@ class Tag extends Model implements SluggableInterface
     }
 
     /**
-     * Todo: Description.
+     * Posts count as hasOne relation.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
@@ -98,19 +97,20 @@ class Tag extends Model implements SluggableInterface
     }
 
     /**
-     * Todo: Description.
+     * Posts count of the category.
      *
+     * @param $value
      * @return int
      */
-    public function getPostsCountAttribute()
+    public function getPostsCountAttribute($value)
     {
-        return $this->getCountFromRelation('postsCount');
+        return $this->getCountFromRelation('postsCount', $value);
     }
 
     /**
-     * Todo: Description.
+     * Latest post of the tag.
      *
-     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function latestPost()
     {
