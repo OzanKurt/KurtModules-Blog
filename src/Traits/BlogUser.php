@@ -8,7 +8,6 @@ use Kurt\Modules\Blog\Models\Post;
 /**
  * Gives the user class ability to use the methods related to blogging.
  *
- * @package Kurt\Modules\Blog\Traits
  * @property-read \Illuminate\Support\Collection blogPosts
  * @property-read int blogPostsCount
  * @property Post latestBlogPost
@@ -18,7 +17,6 @@ use Kurt\Modules\Blog\Models\Post;
  */
 trait BlogUser
 {
-
     /**
      * Posts of the user.
      *
@@ -54,7 +52,7 @@ trait BlogUser
 
         $related = $this->getRelation('blogPostsCount');
 
-        return ($related) ? (int)$related->aggregate : 0;
+        return ($related) ? (int) $related->aggregate : 0;
     }
 
     /**
@@ -102,7 +100,7 @@ trait BlogUser
 
         $related = $this->getRelation('blogCommentsCount');
 
-        return ($related) ? (int)$related->aggregate : 0;
+        return ($related) ? (int) $related->aggregate : 0;
     }
 
     /**

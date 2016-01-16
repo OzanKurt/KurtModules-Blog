@@ -4,11 +4,11 @@ namespace Kurt\Modules\Blog\Repositories\Contracts;
 
 interface CategoriesRepository
 {
-
     /**
      * Find a row by it's id.
      *
      * @param $id
+     *
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function findById($id);
@@ -33,5 +33,4 @@ interface CategoriesRepository
      * @return \Illuminate\Support\Collection
      */
     public function getAllOrderByPopularity();
-
 }

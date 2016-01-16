@@ -1,10 +1,10 @@
-<?php 
+<?php
+
 
 namespace Kurt\Modules\Blog\Observers;
 
 class CommentObserver extends AbstractObserver
 {
-
     public function created($model)
     {
         // TODO: Implement created() method.

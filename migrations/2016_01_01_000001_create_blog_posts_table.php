@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateBlogPostsTable extends Migration
 {
@@ -15,10 +15,10 @@ class CreateBlogPostsTable extends Migration
         Schema::create('blog_posts', function (Blueprint $table) {
 
             $table->increments('id');
-            
+
             $table->string('title');
             $table->string('slug')->index();
-            
+
             $table->text('content');
 
             $userModel = app(config('auth.providers.users.model'));

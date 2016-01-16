@@ -1,10 +1,10 @@
-<?php 
+<?php
+
 
 namespace Kurt\Modules\Blog\Observers;
 
 class TagObserver extends AbstractObserver
 {
-
     public function created($tag)
     {
         // TODO: Implement created() method.
@@ -42,7 +42,7 @@ class TagObserver extends AbstractObserver
 
     public function deleting($tag)
     {
-        if (! $this->modelUsesSoftDeletes($tag)) {
+        if (!$this->modelUsesSoftDeletes($tag)) {
             $tag->posts()->sync([]);
         }
     }

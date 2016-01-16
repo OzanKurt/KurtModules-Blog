@@ -4,7 +4,6 @@ namespace Kurt\Modules\Blog\Observers;
 
 class PostObserver extends AbstractObserver
 {
-
     public function created($post)
     {
         // TODO: Implement created() method.

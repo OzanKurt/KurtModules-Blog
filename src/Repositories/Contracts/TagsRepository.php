@@ -4,11 +4,11 @@ namespace Kurt\Modules\Blog\Repositories\Contracts;
 
 interface TagsRepository
 {
-
     /**
      * Find a row by it's id.
      *
      * @param $id
+     *
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function findById($id);
@@ -17,6 +17,7 @@ interface TagsRepository
      * Find a row by it's id.
      *
      * @param $slug
+     *
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function findBySlug($slug);
@@ -25,6 +26,7 @@ interface TagsRepository
      * Find a row by it's id with it's posts.
      *
      * @param $slug
+     *
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function findBySlugWithPosts($slug);
@@ -33,6 +35,7 @@ interface TagsRepository
      * Find a row by it's id with it's category.
      *
      * @param $id
+     *
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function findByIdWithCategory($id);
@@ -54,7 +57,8 @@ interface TagsRepository
     /**
      * Paginate all posts.
      *
-     * @param integer $postsPerPage
+     * @param int $postsPerPage
+     *
      * @return \Illuminate\Support\Collection
      */
     public function paginateAll($postsPerPage);
@@ -62,9 +66,9 @@ interface TagsRepository
     /**
      * Paginate all posts with it's category.
      *
-     * @param integer $postsPerPage
+     * @param int $postsPerPage
+     *
      * @return \Illuminate\Support\Collection
      */
     public function paginateAllWithCategory($postsPerPage);
-
 }
