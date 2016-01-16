@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class BlogModel extends Model
 {
-
     /**
      * Todo: Description.
      *
@@ -32,6 +31,7 @@ class BlogModel extends Model
      *
      * @param $relationName
      * @param $value
+     *
      * @return int
      */
     protected function getCountFromRelation($relationName, $value)
@@ -46,7 +46,6 @@ class BlogModel extends Model
 
         $related = $this->getRelation($relationName);
 
-        return ($related) ? (int)$related->aggregate : 0;
+        return ($related) ? (int) $related->aggregate : 0;
     }
-
 }

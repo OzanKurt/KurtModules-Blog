@@ -1,7 +1,7 @@
 <?php
 
 Route::group([
-    'prefix' => 'blog',
+    'prefix'     => 'blog',
     'middleware' => ['web'],
 ], function () {
 

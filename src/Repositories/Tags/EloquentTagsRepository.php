@@ -7,7 +7,6 @@ use Kurt\Modules\Blog\Repositories\Contracts\TagsRepository;
 
 class EloquentTagsRepository implements TagsRepository
 {
-
     /**
      * Model instance.
      *
@@ -15,7 +14,7 @@ class EloquentTagsRepository implements TagsRepository
      */
     protected $model;
 
-    function __construct(Tag $model)
+    public function __construct(Tag $model)
     {
         $this->model = $model;
     }
@@ -24,6 +23,7 @@ class EloquentTagsRepository implements TagsRepository
      * Find a row by it's id.
      *
      * @param $id
+     *
      * @return Tag
      */
     public function findById($id)
@@ -35,6 +35,7 @@ class EloquentTagsRepository implements TagsRepository
      * Find a row by it's id.
      *
      * @param $slug
+     *
      * @return Tag
      */
     public function findBySlug($slug)
@@ -46,6 +47,7 @@ class EloquentTagsRepository implements TagsRepository
      * Find a row by it's id with it's posts.
      *
      * @param $slug
+     *
      * @return Tag
      */
     public function findBySlugWithPosts($slug)
@@ -61,6 +63,7 @@ class EloquentTagsRepository implements TagsRepository
      * Find a row by it's id with it's category.
      *
      * @param $id
+     *
      * @return Tag
      */
     public function findByIdWithCategory($id)
@@ -91,7 +94,8 @@ class EloquentTagsRepository implements TagsRepository
     /**
      * Paginate all posts.
      *
-     * @param integer $postsPerPage
+     * @param int $postsPerPage
+     *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function paginateAll($postsPerPage)
@@ -102,7 +106,8 @@ class EloquentTagsRepository implements TagsRepository
     /**
      * Paginate all posts with it's category.
      *
-     * @param integer $postsPerPage
+     * @param int $postsPerPage
+     *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function paginateAllWithCategory($postsPerPage)

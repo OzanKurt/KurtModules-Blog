@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateBlogTagsTable extends Migration
 {
@@ -15,7 +15,7 @@ class CreateBlogTagsTable extends Migration
         Schema::create('blog_tags', function (Blueprint $table) {
 
             $table->increments('id');
-            
+
             $table->string('name');
             $table->string('slug')->index();
 

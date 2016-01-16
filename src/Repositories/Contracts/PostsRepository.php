@@ -2,14 +2,13 @@
 
 namespace Kurt\Modules\Blog\Repositories\Contracts;
 
-
 interface PostsRepository
 {
-
     /**
      * Find a row by it's id.
      *
      * @param $id
+     *
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function findById($id);
@@ -18,6 +17,7 @@ interface PostsRepository
      * Find a row by it's id with it's category.
      *
      * @param $id
+     *
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function findByIdWithCategory($id);
@@ -26,6 +26,7 @@ interface PostsRepository
      * Find a row by it's id with it's category and tags.
      *
      * @param $id
+     *
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function findByIdWithCategoryAndTags($id);
@@ -54,7 +55,8 @@ interface PostsRepository
     /**
      * Paginate all posts.
      *
-     * @param integer $postsPerPage
+     * @param int $postsPerPage
+     *
      * @return \Illuminate\Support\Collection
      */
     public function paginateAll($postsPerPage);
@@ -62,7 +64,8 @@ interface PostsRepository
     /**
      * Paginate all posts with it's category.
      *
-     * @param integer $postsPerPage
+     * @param int $postsPerPage
+     *
      * @return \Illuminate\Support\Collection
      */
     public function paginateAllWithCategory($postsPerPage);
@@ -70,9 +73,9 @@ interface PostsRepository
     /**
      * Paginate all posts with it's category and tags.
      *
-     * @param integer $postsPerPage
+     * @param int $postsPerPage
+     *
      * @return \Illuminate\Support\Collection
      */
     public function paginateAllWithCategoryAndTags($postsPerPage);
-
 }

@@ -5,7 +5,6 @@ namespace Kurt\Modules\Blog\Providers;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
 use Kurt\Modules\Blog\Models\Category;
-use Kurt\Modules\Blog\Observers\CategoryObserver;
 use Kurt\Modules\Blog\Repositories\Categories\CachingCategoriesRepository;
 use Kurt\Modules\Blog\Repositories\Categories\EloquentCategoriesRepository;
 use Kurt\Modules\Blog\Repositories\Contracts\CategoriesRepository;
@@ -21,7 +20,8 @@ class BlogServiceProvider extends ServiceProvider
     /**
      * Define your route model bindings, pattern filters, etc.
      *
-     * @param  \Illuminate\Routing\Router $router
+     * @param \Illuminate\Routing\Router $router
+     *
      * @return void
      */
     public function boot(Router $router)
@@ -52,7 +52,7 @@ class BlogServiceProvider extends ServiceProvider
      */
     private function initConfig()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../../config/kurt_modules_blog.php', 'kurt_modules_blog');
+        $this->mergeConfigFrom(__DIR__.'/../../config/kurt_modules_blog.php', 'kurt_modules_blog');
     }
 
     /**
@@ -77,7 +77,7 @@ class BlogServiceProvider extends ServiceProvider
     protected function registerRepositories()
     {
         $this->app->singleton(CategoriesRepository::class, function () {
-            $eloquentCategoriesRepository = new EloquentCategoriesRepository(new Category);
+            $eloquentCategoriesRepository = new EloquentCategoriesRepository(new Category());
 
             return $eloquentCategoriesRepository;
 
@@ -131,7 +131,8 @@ class BlogServiceProvider extends ServiceProvider
     /**
      * Define the routes for the application.
      *
-     * @param  \Illuminate\Routing\Router $router
+     * @param \Illuminate\Routing\Router $router
+     *
      * @return void
      */
     public function map(Router $router)
@@ -141,7 +142,7 @@ class BlogServiceProvider extends ServiceProvider
         if (!$this->app->routesAreCached()) {
             if ($this->routesArePublished($blogRoutesPath)) {
                 $router->group([
-                    'namespace' => $this->namespace
+                    'namespace' => $this->namespace,
                 ], function ($router) use ($blogRoutesPath) {
                     require $blogRoutesPath;
                 });
@@ -165,6 +166,7 @@ class BlogServiceProvider extends ServiceProvider
      * Determine if the routes file is published.
      *
      * @param $blogRoutesPath
+     *
      * @return bool
      */
     protected function routesArePublished($blogRoutesPath)

@@ -6,7 +6,6 @@ use Kurt\Modules\Blog\Repositories\Categories\CachingCategoriesRepository;
 
 class CategoryObserver extends AbstractObserver
 {
-
     public function created($model)
     {
         // TODO: Implement created() method.
@@ -46,11 +45,10 @@ class CategoryObserver extends AbstractObserver
     {
         if (!$this->modelUsesSoftDeletes()) {
             $category->posts()->update([
-                'category_id' => null
+                'category_id' => null,
             ]);
         }
 
         $this->clearCacheTags(CachingCategoriesRepository::class);
     }
-
 }

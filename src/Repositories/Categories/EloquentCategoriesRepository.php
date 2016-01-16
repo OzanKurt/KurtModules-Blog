@@ -7,7 +7,6 @@ use Kurt\Modules\Blog\Repositories\Contracts\CategoriesRepository;
 
 class EloquentCategoriesRepository implements CategoriesRepository
 {
-
     /**
      * Model instance.
      *
@@ -20,7 +19,7 @@ class EloquentCategoriesRepository implements CategoriesRepository
      *
      * @param Category $model
      */
-    function __construct(Category $model)
+    public function __construct(Category $model)
     {
         $this->model = $model;
     }
@@ -29,6 +28,7 @@ class EloquentCategoriesRepository implements CategoriesRepository
      * Find a row by it's id.
      *
      * @param $id
+     *
      * @return Category
      */
     public function findById($id)
@@ -40,6 +40,7 @@ class EloquentCategoriesRepository implements CategoriesRepository
      * Find a row by it's slug.
      *
      * @param $slug
+     *
      * @return Category
      */
     public function findBySlug($slug)
