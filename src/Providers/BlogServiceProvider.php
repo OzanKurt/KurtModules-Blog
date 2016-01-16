@@ -101,7 +101,7 @@ class BlogServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__ . '/../../config/kurt_modules_blog.php' => config_path('kurt_modules_blog.php'),
-        ], ['kurt_blog', 'config']);
+        ], 'config');
     }
 
     /**
@@ -113,7 +113,7 @@ class BlogServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__ . '/../Http/blogRoutes.php' => $this->getBlogRoutesPath(),
-        ], ['kurt_blog', 'routes']);
+        ], 'routes');
     }
 
     /**
@@ -124,8 +124,8 @@ class BlogServiceProvider extends ServiceProvider
     protected function publishMigrations()
     {
         $this->publishes([
-            __DIR__ . '/../../migrations/' => base_path('database/migrations'),
-        ], ['kurt_blog', 'migrations']);
+            __DIR__ . '/../../database/migrations/' => base_path('database/migrations'),
+        ], 'migrations');
     }
 
     /**
