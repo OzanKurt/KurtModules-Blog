@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Kurt\Modules\Blog\Observers\CategoryObserver;
 
 /**
- * Kurt\Modules\Blog\Models\Category
+ * Kurt\Modules\Blog\Models\Category.
  *
- * @property integer $id
+ * @property int $id
  * @property string $name
  * @property string $slug
  * @property \Carbon\Carbon $created_at
@@ -20,6 +20,7 @@ use Kurt\Modules\Blog\Observers\CategoryObserver;
  * @property-read \Kurt\Modules\Blog\Models\Post $postsCount
  * @property-read mixed $posts_count
  * @property-read \Kurt\Modules\Blog\Models\Post $latestPost
+ *
  * @method static \Illuminate\Database\Query\Builder|\Kurt\Modules\Blog\Models\Category whereSlug($slug)
  */
 class Category extends BlogModel implements SluggableInterface
@@ -28,13 +29,13 @@ class Category extends BlogModel implements SluggableInterface
     use SoftDeletes;
 
     /**
-     * EloquentSluggable configuration
+     * EloquentSluggable configuration.
      *
      * @var array
      */
     protected $sluggable = [
         'build_from' => 'name',
-        'on_update' => true,
+        'on_update'  => true,
     ];
 
     /**
@@ -72,7 +73,7 @@ class Category extends BlogModel implements SluggableInterface
     {
         parent::boot();
 
-        Category::observe(new CategoryObserver());
+        self::observe(new CategoryObserver());
     }
 
     /**
@@ -101,6 +102,7 @@ class Category extends BlogModel implements SluggableInterface
      * Posts count of the category.
      *
      * @param $value
+     *
      * @return int
      */
     public function getPostsCountAttribute($value)

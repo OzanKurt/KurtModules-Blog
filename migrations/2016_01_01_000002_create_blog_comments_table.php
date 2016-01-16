@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateBlogCommentsTable extends Migration
 {
@@ -15,7 +15,7 @@ class CreateBlogCommentsTable extends Migration
         Schema::create('blog_comments', function (Blueprint $table) {
 
             $table->increments('id');
-            
+
             $table->text('content');
 
             $userModel = app(config('auth.providers.users.model'));

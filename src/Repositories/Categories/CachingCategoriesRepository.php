@@ -31,10 +31,10 @@ class CachingCategoriesRepository implements CategoriesRepository
     /**
      * CachingCategoriesRepository constructor.
      *
-     * @param Repository $cache
+     * @param Repository                   $cache
      * @param EloquentCategoriesRepository $eloquentCategoriesRepository
      */
-    function __construct(
+    public function __construct(
         Repository $cache,
         EloquentCategoriesRepository $eloquentCategoriesRepository
     ) {
@@ -46,13 +46,14 @@ class CachingCategoriesRepository implements CategoriesRepository
      * Find a row by it's id.
      *
      * @param $id
+     *
      * @return \Kurt\Modules\Blog\Models\Category
      */
     public function findById($id)
     {
         return $this->cache->tags([
             __METHOD__,
-            __CLASS__
+            __CLASS__,
         ])->remember(__METHOD__, $this->minutes, function () use ($id) {
             return $this->eloquentCategoriesRepository->findById($id);
         });
@@ -62,13 +63,14 @@ class CachingCategoriesRepository implements CategoriesRepository
      * Find a row by it's slug.
      *
      * @param $slug
+     *
      * @return \Kurt\Modules\Blog\Models\Category
      */
     public function findBySlug($slug)
     {
         return $this->cache->tags([
             __METHOD__,
-            __CLASS__
+            __CLASS__,
         ])->remember(__METHOD__, $this->minutes, function () use ($slug) {
             return $this->eloquentCategoriesRepository->findBySlug($slug);
         });
@@ -83,7 +85,7 @@ class CachingCategoriesRepository implements CategoriesRepository
     {
         return $this->cache->tags([
             __METHOD__,
-            __CLASS__
+            __CLASS__,
         ])->remember(__METHOD__, $this->minutes, function () {
             return $this->eloquentCategoriesRepository->getAll();
         });
@@ -98,7 +100,7 @@ class CachingCategoriesRepository implements CategoriesRepository
     {
         return $this->cache->tags([
             __METHOD__,
-            __CLASS__
+            __CLASS__,
         ])->remember(__METHOD__, $this->minutes, function () {
             return $this->eloquentCategoriesRepository->getAllWithPostsCounts();
         });
@@ -113,7 +115,7 @@ class CachingCategoriesRepository implements CategoriesRepository
     {
         return $this->cache->tags([
             __METHOD__,
-            __CLASS__
+            __CLASS__,
         ])->remember(__METHOD__, $this->minutes, function () {
             return $this->eloquentCategoriesRepository->getAllOrderByPopularity();
         });

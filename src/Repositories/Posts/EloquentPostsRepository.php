@@ -7,7 +7,6 @@ use Kurt\Modules\Blog\Repositories\Contracts\PostsRepository;
 
 class EloquentPostsRepository implements PostsRepository
 {
-
     /**
      * Model instance.
      *
@@ -15,7 +14,7 @@ class EloquentPostsRepository implements PostsRepository
      */
     protected $model;
 
-    function __construct(Post $model)
+    public function __construct(Post $model)
     {
         $this->model = $model;
     }
@@ -24,6 +23,7 @@ class EloquentPostsRepository implements PostsRepository
      * Find a row by it's id.
      *
      * @param $id
+     *
      * @return Post
      */
     public function findById($id)
@@ -35,6 +35,7 @@ class EloquentPostsRepository implements PostsRepository
      * Find a row by it's id with it's category.
      *
      * @param $id
+     *
      * @return Post
      */
     public function findByIdWithCategory($id)
@@ -46,6 +47,7 @@ class EloquentPostsRepository implements PostsRepository
      * Find a row by it's id with it's category and tags.
      *
      * @param $id
+     *
      * @return Post
      */
     public function findByIdWithCategoryAndTags($id)
@@ -86,7 +88,8 @@ class EloquentPostsRepository implements PostsRepository
     /**
      * Paginate all posts.
      *
-     * @param integer $postsPerPage
+     * @param int $postsPerPage
+     *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function paginateAll($postsPerPage)
@@ -94,11 +97,11 @@ class EloquentPostsRepository implements PostsRepository
         return $this->model->paginate($postsPerPage);
     }
 
-
     /**
      * Paginate all posts with it's category.
      *
-     * @param integer $postsPerPage
+     * @param int $postsPerPage
+     *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function paginateAllWithCategory($postsPerPage)
@@ -113,7 +116,8 @@ class EloquentPostsRepository implements PostsRepository
     /**
      * Paginate all posts with it's category and tags.
      *
-     * @param integer $postsPerPage
+     * @param int $postsPerPage
+     *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
     public function paginateAllWithCategoryAndTags($postsPerPage)
