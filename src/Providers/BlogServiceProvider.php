@@ -15,7 +15,26 @@ use Kurt\Modules\Blog\Repositories\Tags\EloquentTagsRepository;
 
 class BlogServiceProvider extends ServiceProvider
 {
+    /**
+     * Default namespace for blog routes.
+     *
+     * @var string
+     */
     protected $namespace = 'App\Http\Controllers\Blog';
+
+    /**
+     * Base path of blog module.
+     *
+     * @var string
+     */
+    protected $basePath = __DIR__.'/../..';
+
+    /**
+     * Source path of blog module.
+     *
+     * @var string
+     */
+    protected $sourcePath = __DIR__.'/..';
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -43,6 +62,8 @@ class BlogServiceProvider extends ServiceProvider
         $this->publishVendor();
 
         $this->registerRepositories();
+
+        $this->publishViews();
     }
 
     /**
@@ -52,7 +73,7 @@ class BlogServiceProvider extends ServiceProvider
      */
     private function initConfig()
     {
-        $this->mergeConfigFrom(__DIR__.'/../../config/kurt_modules_blog.php', 'kurt_modules_blog');
+        $this->mergeConfigFrom($this->basePath.'/config/kurt_modules_blog.php', 'kurt_modules_blog');
     }
 
     /**
@@ -93,6 +114,22 @@ class BlogServiceProvider extends ServiceProvider
     }
 
     /**
+     * Publish views.
+     *
+     * @todo: Add ability to publish module views.
+     *
+     * @return void
+     */
+    private function publishViews()
+    {
+        $this->loadViewsFrom($this->basePath.'/resources/views', 'kurtmodules-blog');
+
+        $this->publishes([
+            $this->basePath.'/resources/views' => base_path('resources/views/vendor/kurtmodules-blog'),
+        ]);
+    }
+
+    /**
      * Publish configurations.
      *
      * @return void
@@ -100,7 +137,7 @@ class BlogServiceProvider extends ServiceProvider
     protected function publishConfigurations()
     {
         $this->publishes([
-            __DIR__.'/../../config/kurt_modules_blog.php' => config_path('kurt_modules_blog.php'),
+            $this->basePath.'config/kurt_modules_blog.php' => config_path('kurt_modules_blog.php'),
         ], 'config');
     }
 
@@ -112,7 +149,7 @@ class BlogServiceProvider extends ServiceProvider
     protected function publishRoutes()
     {
         $this->publishes([
-            __DIR__.'/../Http/blogRoutes.php' => $this->getBlogRoutesPath(),
+            $this->sourcePath.'/Http/blogRoutes.php' => $this->getBlogRoutesPath(),
         ], 'routes');
     }
 
@@ -124,7 +161,7 @@ class BlogServiceProvider extends ServiceProvider
     protected function publishMigrations()
     {
         $this->publishes([
-            __DIR__.'/../../database/migrations/' => base_path('database/migrations'),
+            $this->basePath.'/database/migrations/' => base_path('database/migrations'),
         ], 'migrations');
     }
 
@@ -147,7 +184,7 @@ class BlogServiceProvider extends ServiceProvider
                     require $blogRoutesPath;
                 });
             } else {
-                warning('KurtModules-Blog routes file is not published.');
+                $this->app->make('log')->error('KurtModules-Blog routes file is not published.');
             }
         }
     }
@@ -159,7 +196,7 @@ class BlogServiceProvider extends ServiceProvider
      */
     private function getBlogRoutesPath()
     {
-        return $this->app->config->get('kurt_modules_blog.blog_routes_path');
+        return $this->app->make('config')->get('kurt_modules_blog.blog_routes_path');
     }
 
     /**
