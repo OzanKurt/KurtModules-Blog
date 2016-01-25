@@ -8,18 +8,19 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Kurt\Modules\Blog\Observers\TagObserver;
 
 /**
- * Kurt\Modules\Blog\Models\Tag.
+ * Class Tag
  *
- * @property int $id
+ * @package Kurt\Modules\Blog\Models
+ * @property integer $id
  * @property string $name
  * @property string $slug
+ * @property string $color
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property \Carbon\Carbon $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\Kurt\Modules\Blog\Models\Post[] $posts
  * @property-read \Kurt\Modules\Blog\Models\Post $postsCount
  * @property-read mixed $posts_count
- *
  * @method static \Illuminate\Database\Query\Builder|\Kurt\Modules\Blog\Models\Tag whereSlug($slug)
  */
 class Tag extends BlogModel implements SluggableInterface
@@ -118,4 +119,20 @@ class Tag extends BlogModel implements SluggableInterface
     {
         return $this->posts()->latest()->first();
     }
+
+    /**
+     * Get tag badge as html.
+     *
+     * @param $routeName
+     *
+     * @return string
+     */
+    public function renderBadge($routeName)
+    {
+         return view('kurtmodules-blog::tags.badge', [
+             'url' => route($routeName, $this->slug),
+             'tag' => $this,
+         ])->render();
+    }
+
 }

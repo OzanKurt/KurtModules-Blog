@@ -4,6 +4,11 @@ namespace Kurt\Modules\Blog\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class BlogModel
+ *
+ * @package Kurt\Modules\Blog\Models
+ */
 class BlogModel extends Model
 {
     /**

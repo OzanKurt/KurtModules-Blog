@@ -8,14 +8,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Kurt\Modules\Blog\Observers\PostObserver;
 
 /**
- * Kurt\Modules\Blog\Models\Post.
+ * Class Post
  *
- * @property int $id
+ * @package Kurt\Modules\Blog\Models
+ * @property integer $id
  * @property string $title
  * @property string $slug
  * @property string $content
- * @property int $user_id
- * @property int $category_id
+ * @property integer $user_id
+ * @property integer $category_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property \Carbon\Carbon $deleted_at
@@ -28,7 +29,6 @@ use Kurt\Modules\Blog\Observers\PostObserver;
  * @property-read \Illuminate\Database\Eloquent\Collection|\Kurt\Modules\Blog\Models\Tag[] $tags
  * @property-read \Kurt\Modules\Blog\Models\Tag $tagsCount
  * @property-read mixed $tags_count
- *
  * @method static \Illuminate\Database\Query\Builder|\Kurt\Modules\Blog\Models\Post whereSlug($slug)
  */
 class Post extends BlogModel implements SluggableInterface

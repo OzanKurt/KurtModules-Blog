@@ -6,16 +6,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Kurt\Modules\Blog\Observers\CommentObserver;
 
 /**
- * Kurt\Modules\Blog\Models\Comment.
+ * Class Comment
  *
- * @property int $id
+ * @package Kurt\Modules\Blog\Models
+ * @property integer $id
  * @property string $content
- * @property int $user_id
- * @property int $post_id
+ * @property integer $user_id
+ * @property integer $post_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property \Carbon\Carbon $deleted_at
- * @property-read \Kurt\Modules\Blog\Models\Post $posts
+ * @property-read \Kurt\Modules\Blog\Models\Post $post
  * @property-read \App\User $user
  */
 class Comment extends BlogModel
