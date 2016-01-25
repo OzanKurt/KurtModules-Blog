@@ -10,10 +10,15 @@ class EloquentPostsRepository implements PostsRepository
     /**
      * Model instance.
      *
-     * @var Post
+     * @var \Illuminate\Database\Eloquent\Builder|Post
      */
     protected $model;
 
+    /**
+     * EloquentPostsRepository constructor.
+     *
+     * @param \Kurt\Modules\Blog\Models\Post $model
+     */
     public function __construct(Post $model)
     {
         $this->model = $model;
@@ -24,7 +29,7 @@ class EloquentPostsRepository implements PostsRepository
      *
      * @param $id
      *
-     * @return Post
+     * @return \Kurt\Modules\Blog\Models\Post|null
      */
     public function findById($id)
     {
@@ -36,11 +41,15 @@ class EloquentPostsRepository implements PostsRepository
      *
      * @param $id
      *
-     * @return Post
+     * @return \Kurt\Modules\Blog\Models\Post|null
      */
     public function findByIdWithCategory($id)
     {
-        return $this->model->with(['category'])->find($id);
+        $post = $this->findById($id);
+
+        $post->load(['category']);
+
+        return $post;
     }
 
     /**
@@ -48,17 +57,65 @@ class EloquentPostsRepository implements PostsRepository
      *
      * @param $id
      *
-     * @return Post
+     * @return \Kurt\Modules\Blog\Models\Post|null
      */
     public function findByIdWithCategoryAndTags($id)
     {
-        return $this->model->with(['category', 'tags'])->find($id);
+        $post = $this->findById($id);
+
+        $post->load(['category', 'tags']);
+
+        return $post;
+    }
+
+    /**
+     * Find a row by it's slug.
+     *
+     * @param $slug
+     *
+     * @return \Kurt\Modules\Blog\Models\Post|null
+     */
+    public function findBySlug($slug)
+    {
+        return $this->model->where('slug', '=', $slug)->first();
+    }
+
+    /**
+     * Find a row by it's slug with it's category.
+     *
+     * @param $slug
+     *
+     * @return \Kurt\Modules\Blog\Models\Post|null
+     */
+    public function findBySlugWithCategory($slug)
+    {
+        $post = $this->findBySlug($slug);
+
+        $post->load(['category']);
+
+        return $post;
+    }
+
+    /**
+     * Find a row by it's slug with it's category and tags.
+     *
+     * @param $slug
+     *
+     * @return \Kurt\Modules\Blog\Models\Post|null
+     */
+    public function findBySlugWithCategoryAndTags($slug)
+    {
+        $post = $this->findBySlug($slug);
+
+        $post->load(['category', 'tags']);
+
+        return $post;
     }
 
     /**
      * Get all posts.
      *
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getAll()
     {
@@ -68,21 +125,29 @@ class EloquentPostsRepository implements PostsRepository
     /**
      * Get all posts with it's category.
      *
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getAllWithCategory()
     {
-        return $this->model->with(['category'])->get();
+        $posts = $this->getAll();
+
+        $posts->load(['category']);
+
+        return $posts;
     }
 
     /**
      * Get all posts with it's category and tags.
      *
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getAllWithCategoryAndTags()
     {
-        return $this->model->with(['category', 'tags'])->get();
+        $posts = $this->getAll();
+
+        $posts->load(['category', 'tags']);
+
+        return $posts;
     }
 
     /**
@@ -90,7 +155,7 @@ class EloquentPostsRepository implements PostsRepository
      *
      * @param int $postsPerPage
      *
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection
      */
     public function paginateAll($postsPerPage)
     {
@@ -102,7 +167,7 @@ class EloquentPostsRepository implements PostsRepository
      *
      * @param int $postsPerPage
      *
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection
      */
     public function paginateAllWithCategory($postsPerPage)
     {
@@ -118,7 +183,7 @@ class EloquentPostsRepository implements PostsRepository
      *
      * @param int $postsPerPage
      *
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection
      */
     public function paginateAllWithCategoryAndTags($postsPerPage)
     {
@@ -128,4 +193,5 @@ class EloquentPostsRepository implements PostsRepository
 
         return $posts;
     }
+
 }

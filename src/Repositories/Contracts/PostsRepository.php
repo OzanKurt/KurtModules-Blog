@@ -4,12 +4,13 @@ namespace Kurt\Modules\Blog\Repositories\Contracts;
 
 interface PostsRepository
 {
+
     /**
      * Find a row by it's id.
      *
      * @param $id
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Kurt\Modules\Blog\Models\Post|null
      */
     public function findById($id);
 
@@ -18,7 +19,7 @@ interface PostsRepository
      *
      * @param $id
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Kurt\Modules\Blog\Models\Post|null
      */
     public function findByIdWithCategory($id);
 
@@ -26,29 +27,54 @@ interface PostsRepository
      * Find a row by it's id with it's category and tags.
      *
      * @param $id
-     *
-     * @return \Illuminate\Database\Eloquent\Model
      */
     public function findByIdWithCategoryAndTags($id);
 
     /**
+     * Find a row by it's slug.
+     *
+     * @param $slug
+     *
+     * @return \Kurt\Modules\Blog\Models\Post|null
+     */
+    public function findBySlug($slug);
+
+    /**
+     * Find a row by it's slug with it's category.
+     *
+     * @param $slug
+     *
+     * @return \Kurt\Modules\Blog\Models\Post|null
+     */
+    public function findBySlugWithCategory($slug);
+
+    /**
+     * Find a row by it's slug with it's category and tags.
+     *
+     * @param $slug
+     *
+     * @return \Kurt\Modules\Blog\Models\Post|null
+     */
+    public function findBySlugWithCategoryAndTags($slug);
+
+    /**
      * Get all posts.
      *
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getAll();
 
     /**
      * Get all posts with it's category.
      *
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getAllWithCategory();
 
     /**
      * Get all posts with it's category and tags.
      *
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getAllWithCategoryAndTags();
 
@@ -57,7 +83,7 @@ interface PostsRepository
      *
      * @param int $postsPerPage
      *
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection
      */
     public function paginateAll($postsPerPage);
 
@@ -66,7 +92,7 @@ interface PostsRepository
      *
      * @param int $postsPerPage
      *
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection
      */
     public function paginateAllWithCategory($postsPerPage);
 
@@ -75,7 +101,7 @@ interface PostsRepository
      *
      * @param int $postsPerPage
      *
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection
      */
     public function paginateAllWithCategoryAndTags($postsPerPage);
 }
