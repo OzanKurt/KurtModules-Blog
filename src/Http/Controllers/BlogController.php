@@ -1,6 +1,6 @@
 <?php
 
-namespace Kurt\Modules\Blog\Controllers;
+namespace Kurt\Modules\Blog\Http\Controllers;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -10,6 +10,10 @@ use Kurt\Modules\Blog\Repositories\Contracts\CategoriesRepository;
 use Kurt\Modules\Blog\Repositories\Contracts\PostsRepository;
 use Kurt\Modules\Blog\Repositories\Contracts\TagsRepository;
 
+/**
+ * Class BlogController
+ * @package Kurt\Modules\Blog\Http\Controllers
+ */
 class BlogController extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
