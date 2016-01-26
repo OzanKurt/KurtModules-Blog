@@ -32,6 +32,22 @@ class EloquentTagsRepository implements TagsRepository
     }
 
     /**
+     * Find a row by it's id with it's posts.
+     *
+     * @param $id
+     *
+     * @return Tag
+     */
+    public function findByIdWithPosts($id)
+    {
+        $tag = $this->findById($id);
+
+        $tag->load(['posts.category', 'posts.tags']);
+
+        return $tag;
+    }
+
+    /**
      * Find a row by it's id.
      *
      * @param $slug
@@ -60,18 +76,6 @@ class EloquentTagsRepository implements TagsRepository
     }
 
     /**
-     * Find a row by it's id with it's category.
-     *
-     * @param $id
-     *
-     * @return Tag
-     */
-    public function findByIdWithCategory($id)
-    {
-        return $this->model->with(['category'])->find($id);
-    }
-
-    /**
      * Get all posts.
      *
      * @return \Illuminate\Support\Collection
@@ -86,9 +90,13 @@ class EloquentTagsRepository implements TagsRepository
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getAllWithCategory()
+    public function getAllWithPosts()
     {
-        return $this->model->with(['category'])->get();
+        $tags = $this->getAll();
+
+        $tags->load(['posts.category', 'posts.tags']);
+
+        return $tags;
     }
 
     /**
@@ -110,11 +118,11 @@ class EloquentTagsRepository implements TagsRepository
      *
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function paginateAllWithCategory($postsPerPage)
+    public function paginateAllWithPosts($postsPerPage)
     {
-        $posts = $this->model->paginate($postsPerPage);
+        $posts = $this->paginateAll($postsPerPage);
 
-        $posts->load(['category']);
+        $posts->load(['posts.category', 'posts.tags']);
 
         return $posts;
     }

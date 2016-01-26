@@ -2,8 +2,17 @@
 
 namespace Kurt\Modules\Blog\Repositories\Contracts;
 
+use Kurt\Modules\Blog\Models\Post;
+
 interface PostsRepository
 {
+
+    /**
+     * PostsRepository constructor.
+     *
+     * @param \Kurt\Modules\Blog\Models\Post $model
+     */
+    public function __construct(Post $model);
 
     /**
      * Find a row by it's id.
