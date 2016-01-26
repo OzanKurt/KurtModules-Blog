@@ -8,15 +8,17 @@ use Kurt\Modules\Blog\Models\Post;
 /**
  * Gives the user class ability to use the methods related to blogging.
  *
- * @property-read \Illuminate\Support\Collection blogPosts
- * @property-read int blogPostsCount
- * @property Post latestBlogPost
- * @property-read \Illuminate\Support\Collection blogComments
- * @property-read int blogCommentsCount
- * @property Comment latestBlogComment
+ * @property-read \Illuminate\Support\Collection $blogPosts
+ * @property-read int                            $blogPostsCount
+ * @property Post                                $latestBlogPost
+ * @property-read \Illuminate\Support\Collection $blogComments
+ * @property-read int                            $blogCommentsCount
+ * @property Comment                             $latestBlogComment
  */
 trait BlogUser
 {
+    use GetCountFromRelation;
+
     /**
      * Posts of the user.
      *
@@ -42,17 +44,13 @@ trait BlogUser
     /**
      * Get `blogPostsCount` attribute for easy access to posts count.
      *
+     * @param $value
+     *
      * @return int
      */
-    public function getBlogPostsCountAttribute()
+    public function getBlogPostsCountAttribute($value)
     {
-        if (!$this->relationLoaded('blogPostsCount')) {
-            $this->load('blogPostsCount');
-        }
-
-        $related = $this->getRelation('blogPostsCount');
-
-        return ($related) ? (int) $related->aggregate : 0;
+        return $this->getCountFromRelation('blogPostsCount', $value);
     }
 
     /**
@@ -90,17 +88,13 @@ trait BlogUser
     /**
      * Get `blogCommentsCount` attribute for easy access to comments count.
      *
+     * @param $value
+     *
      * @return int
      */
-    public function getBlogCommentsCountAttribute()
+    public function getBlogCommentsCountAttribute($value)
     {
-        if (!$this->relationLoaded('blogCommentsCount')) {
-            $this->load('blogCommentsCount');
-        }
-
-        $related = $this->getRelation('blogCommentsCount');
-
-        return ($related) ? (int) $related->aggregate : 0;
+        return $this->getCountFromRelation('blogCommentsCount', $value);
     }
 
     /**

@@ -2,25 +2,30 @@
 
 namespace Kurt\Modules\Blog\Models;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Kurt\Modules\Blog\Observers\CommentObserver;
+use Kurt\Modules\Blog\Traits\GetCountFromRelation;
+use Kurt\Modules\Blog\Traits\GetUserModelData;
 
 /**
  * Class Comment
  *
  * @package Kurt\Modules\Blog\Models
- * @property integer $id
- * @property string $content
- * @property integer $user_id
- * @property integer $post_id
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property \Carbon\Carbon $deleted_at
+ * @property integer                             $id
+ * @property string                              $content
+ * @property integer                             $user_id
+ * @property integer                             $post_id
+ * @property \Carbon\Carbon                      $created_at
+ * @property \Carbon\Carbon                      $updated_at
+ * @property \Carbon\Carbon                      $deleted_at
  * @property-read \Kurt\Modules\Blog\Models\Post $post
- * @property-read \App\User $user
+ * @property-read \App\User                      $user
  */
-class Comment extends BlogModel
+class Comment extends Model
 {
+    use GetCountFromRelation;
+    use GetUserModelData;
     use SoftDeletes;
 
     /**

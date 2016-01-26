@@ -4,35 +4,40 @@ namespace Kurt\Modules\Blog\Models;
 
 use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Kurt\Modules\Blog\Observers\PostObserver;
+use Kurt\Modules\Blog\Traits\GetCountFromRelation;
+use Kurt\Modules\Blog\Traits\GetUserModelData;
 
 /**
  * Class Post
  *
  * @package Kurt\Modules\Blog\Models
- * @property integer $id
- * @property string $title
- * @property string $slug
- * @property string $content
- * @property integer $user_id
- * @property integer $category_id
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property \Carbon\Carbon $deleted_at
- * @property-read \Kurt\Modules\Blog\Models\Category $category
- * @property-read \App\User $user
+ * @property integer                                                                           $id
+ * @property string                                                                            $title
+ * @property string                                                                            $slug
+ * @property string                                                                            $content
+ * @property integer                                                                           $user_id
+ * @property integer                                                                           $category_id
+ * @property \Carbon\Carbon                                                                    $created_at
+ * @property \Carbon\Carbon                                                                    $updated_at
+ * @property \Carbon\Carbon                                                                    $deleted_at
+ * @property-read \Kurt\Modules\Blog\Models\Category                                           $category
+ * @property-read \App\User                                                                    $user
  * @property-read \Illuminate\Database\Eloquent\Collection|\Kurt\Modules\Blog\Models\Comment[] $comments
- * @property-read \Kurt\Modules\Blog\Models\Comment $commentsCount
- * @property-read mixed $comments_count
- * @property-read \Kurt\Modules\Blog\Models\Comment $latestComment
- * @property-read \Illuminate\Database\Eloquent\Collection|\Kurt\Modules\Blog\Models\Tag[] $tags
- * @property-read \Kurt\Modules\Blog\Models\Tag $tagsCount
- * @property-read mixed $tags_count
+ * @property-read \Kurt\Modules\Blog\Models\Comment                                            $commentsCount
+ * @property-read mixed                                                                        $comments_count
+ * @property-read \Kurt\Modules\Blog\Models\Comment                                            $latestComment
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Kurt\Modules\Blog\Models\Tag[]     $tags
+ * @property-read \Kurt\Modules\Blog\Models\Tag                                                $tagsCount
+ * @property-read mixed                                                                        $tags_count
  * @method static \Illuminate\Database\Query\Builder|\Kurt\Modules\Blog\Models\Post whereSlug($slug)
  */
-class Post extends BlogModel implements SluggableInterface
+class Post extends Model implements SluggableInterface
 {
+    use GetCountFromRelation;
+    use GetUserModelData;
     use SluggableTrait;
     use SoftDeletes;
 
@@ -136,11 +141,13 @@ class Post extends BlogModel implements SluggableInterface
     /**
      * Todo: Description.
      *
+     * @param $value
+     *
      * @return int
      */
-    public function getCommentsCountAttribute()
+    public function getCommentsCountAttribute($value)
     {
-        return $this->getCountFromRelation('commentsCount');
+        return $this->getCountFromRelation('commentsCount', $value);
     }
 
     /**
@@ -178,10 +185,12 @@ class Post extends BlogModel implements SluggableInterface
     /**
      * Todo: Description.
      *
+     * @param $value
+     *
      * @return int
      */
-    public function getTagsCountAttribute()
+    public function getTagsCountAttribute($value)
     {
-        return $this->getCountFromRelation('tagsCount');
+        return $this->getCountFromRelation('tagsCount', $value);
     }
 }

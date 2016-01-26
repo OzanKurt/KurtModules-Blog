@@ -4,27 +4,32 @@ namespace Kurt\Modules\Blog\Models;
 
 use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Kurt\Modules\Blog\Observers\TagObserver;
+use Kurt\Modules\Blog\Traits\GetCountFromRelation;
+use Kurt\Modules\Blog\Traits\GetUserModelData;
 
 /**
  * Class Tag
  *
  * @package Kurt\Modules\Blog\Models
- * @property integer $id
- * @property string $name
- * @property string $slug
- * @property string $color
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property \Carbon\Carbon $deleted_at
+ * @property integer                                                                        $id
+ * @property string                                                                         $name
+ * @property string                                                                         $slug
+ * @property string                                                                         $color
+ * @property \Carbon\Carbon                                                                 $created_at
+ * @property \Carbon\Carbon                                                                 $updated_at
+ * @property \Carbon\Carbon                                                                 $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\Kurt\Modules\Blog\Models\Post[] $posts
- * @property-read \Kurt\Modules\Blog\Models\Post $postsCount
- * @property-read mixed $posts_count
+ * @property-read \Kurt\Modules\Blog\Models\Post                                            $postsCount
+ * @property-read mixed                                                                     $posts_count
  * @method static \Illuminate\Database\Query\Builder|\Kurt\Modules\Blog\Models\Tag whereSlug($slug)
  */
-class Tag extends BlogModel implements SluggableInterface
+class Tag extends Model implements SluggableInterface
 {
+    use GetCountFromRelation;
+    use GetUserModelData;
     use SluggableTrait;
     use SoftDeletes;
 
@@ -129,10 +134,10 @@ class Tag extends BlogModel implements SluggableInterface
      */
     public function renderBadge($routeName)
     {
-         return view('kurtmodules-blog::tags.badge', [
-             'url' => route($routeName, $this->slug),
-             'tag' => $this,
-         ])->render();
+        return view('kurtmodules-blog::tags.badge', [
+            'url' => route($routeName, $this->slug),
+            'tag' => $this,
+        ])->render();
     }
 
 }
