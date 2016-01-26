@@ -113,4 +113,52 @@ interface PostsRepository
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection
      */
     public function paginateAllWithCategoryAndTags($postsPerPage);
+
+    /**
+     * Get all deleted posts.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getAllDeleted();
+
+    /**
+     * Get all deleted posts with it's category.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getAllDeletedWithCategory();
+
+    /**
+     * Get all deleted posts with it's category and tags.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getAllDeletedWithCategoryAndTags();
+
+    /**
+     * Paginate all deleted posts.
+     *
+     * @param int $postsPerPage
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection
+     */
+    public function paginateAllDeleted($postsPerPage);
+
+    /**
+     * Paginate all deleted posts with it's category.
+     *
+     * @param int $postsPerPage
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection
+     */
+    public function paginateAllDeletedWithCategory($postsPerPage);
+
+    /**
+     * Paginate all deleted posts with it's category and tags.
+     *
+     * @param int $postsPerPage
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection
+     */
+    public function paginateAllDeletedWithCategoryAndTags($postsPerPage);
 }

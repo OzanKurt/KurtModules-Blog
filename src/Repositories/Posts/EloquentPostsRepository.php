@@ -194,4 +194,85 @@ class EloquentPostsRepository implements PostsRepository
         return $posts;
     }
 
+    /**
+     * Get all deleted posts.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getAllDeleted()
+    {
+        return $this->model->withTrashed()->get();
+    }
+
+    /**
+     * Get all deleted posts with it's category.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getAllDeletedWithCategory()
+    {
+        $posts = $this->getAllDeleted();
+
+        $posts->load(['category']);
+
+        return $posts;
+    }
+
+    /**
+     * Get all deleted posts with it's category and tags.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getAllDeletedWithCategoryAndTags()
+    {
+        $posts = $this->getAllDeleted();
+
+        $posts->load(['category', 'tags']);
+
+        return $posts;
+    }
+
+    /**
+     * Paginate all deleted posts.
+     *
+     * @param int $postsPerPage
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection
+     */
+    public function paginateAllDeleted($postsPerPage)
+    {
+        return $this->model->withTrashed()->paginate($postsPerPage);
+    }
+
+    /**
+     * Paginate all deleted posts with it's category.
+     *
+     * @param int $postsPerPage
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection
+     */
+    public function paginateAllDeletedWithCategory($postsPerPage)
+    {
+        $posts = $this->paginateAllDeleted();
+
+        $posts->load(['category']);
+
+        return $posts;
+    }
+
+    /**
+     * Paginate all deleted posts with it's category and tags.
+     *
+     * @param int $postsPerPage
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Collection
+     */
+    public function paginateAllDeletedWithCategoryAndTags($postsPerPage)
+    {
+        $posts = $this->paginateAllDeleted();
+
+        $posts->load(['category', 'tags']);
+
+        return $posts;
+    }
 }
