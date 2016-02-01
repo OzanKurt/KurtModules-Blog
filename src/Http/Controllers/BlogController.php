@@ -6,9 +6,9 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
-use Kurt\Modules\Blog\Repositories\Contracts\CategoriesRepository;
-use Kurt\Modules\Blog\Repositories\Contracts\PostsRepository;
-use Kurt\Modules\Blog\Repositories\Contracts\TagsRepository;
+use Kurt\Modules\Blog\Repositories\Contracts\CategoriesRepositoryInterface;
+use Kurt\Modules\Blog\Repositories\Contracts\PostsRepositoryInterface;
+use Kurt\Modules\Blog\Repositories\Contracts\TagsRepositoryInterface;
 
 /**
  * Class BlogController
@@ -26,14 +26,14 @@ class BlogController extends BaseController
     /**
      * Ready up blog repositories.
      *
-     * @param CategoriesRepository $blogCategoriesRepository
-     * @param PostsRepository      $blogPostsRepository
-     * @param TagsRepository       $blogTagsRepository
+     * @param CategoriesRepositoryInterface $blogCategoriesRepository
+     * @param PostsRepositoryInterface      $blogPostsRepository
+     * @param TagsRepositoryInterface       $blogTagsRepository
      */
     public function __construct(
-        CategoriesRepository $blogCategoriesRepository,
-        PostsRepository $blogPostsRepository,
-        TagsRepository $blogTagsRepository
+        CategoriesRepositoryInterface $blogCategoriesRepository,
+        PostsRepositoryInterface $blogPostsRepository,
+        TagsRepositoryInterface $blogTagsRepository
     ) {
         $this->blogCategoriesRepository = $blogCategoriesRepository;
         $this->blogPostsRepository = $blogPostsRepository;

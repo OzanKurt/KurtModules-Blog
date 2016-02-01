@@ -7,9 +7,9 @@ use Illuminate\Routing\Router;
 use Kurt\Modules\Blog\Models\Category;
 use Kurt\Modules\Blog\Repositories\Categories\CachingCategoriesRepository;
 use Kurt\Modules\Blog\Repositories\Categories\EloquentCategoriesRepository;
-use Kurt\Modules\Blog\Repositories\Contracts\CategoriesRepository;
-use Kurt\Modules\Blog\Repositories\Contracts\PostsRepository;
-use Kurt\Modules\Blog\Repositories\Contracts\TagsRepository;
+use Kurt\Modules\Blog\Repositories\Contracts\CategoriesRepositoryInterface;
+use Kurt\Modules\Blog\Repositories\Contracts\PostsRepositoryInterface;
+use Kurt\Modules\Blog\Repositories\Contracts\TagsRepositoryInterface;
 use Kurt\Modules\Blog\Repositories\Posts\EloquentPostsRepository;
 use Kurt\Modules\Blog\Repositories\Tags\EloquentTagsRepository;
 
@@ -97,20 +97,32 @@ class BlogServiceProvider extends ServiceProvider
      */
     protected function registerRepositories()
     {
-        $this->app->singleton(CategoriesRepository::class, function () {
-            $eloquentCategoriesRepository = new EloquentCategoriesRepository(new Category());
-
-            return $eloquentCategoriesRepository;
-
-            $cachingCategoriesRepository = new CachingCategoriesRepository(
-                $this->app->make('cache.store'),
-                $eloquentCategoriesRepository
-            );
-
-            return $cachingCategoriesRepository;
+        $this->app->singleton(CategoriesRepositoryInterface::class, function() {
+            return $this->instantiateCategoriesRepository();
         });
-        $this->app->singleton(PostsRepository::class, EloquentPostsRepository::class);
-        $this->app->singleton(TagsRepository::class, EloquentTagsRepository::class);
+        $this->app->singleton(PostsRepositoryInterface::class, EloquentPostsRepository::class);
+        $this->app->singleton(TagsRepositoryInterface::class, EloquentTagsRepository::class);
+    }
+
+    /**
+     * Instantiate categories repository.
+     *
+     * @return \Kurt\Modules\Blog\Repositories\Categories\CachingCategoriesRepository|\Kurt\Modules\Blog\Repositories\Categories\EloquentCategoriesRepository
+     */
+    function instantiateCategoriesRepository()
+    {
+        $eloquentCategoriesRepository = new EloquentCategoriesRepository(new Category());
+
+        if ($this->getBlogDebug() || !$this->getBlogCache()) {
+            return $eloquentCategoriesRepository;
+        }
+
+        $cachingCategoriesRepository = new CachingCategoriesRepository(
+            $this->app->make('cache.store'),
+            $eloquentCategoriesRepository
+        );
+
+        return $cachingCategoriesRepository;
     }
 
     /**
@@ -190,7 +202,28 @@ class BlogServiceProvider extends ServiceProvider
     }
 
     /**
-     * Get the blog_routes_path from configurations.
+     * Get the `debug` from configurations.
+     *
+     * @return string
+     */
+    private function getBlogDebug()
+    {
+        return $this->app->make('config')->get('kurt_modules_blog.debug');
+    }
+
+    /**
+     * Get the `cache` from configurations.
+     *
+     * @return string
+     */
+    private function getBlogCache()
+    {
+        return $this->app->make('config')->get('kurt_modules_blog.cache');
+    }
+
+
+    /**
+     * Get the `blog_routes_path` from configurations.
      *
      * @return string
      */
