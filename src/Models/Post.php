@@ -93,7 +93,7 @@ class Post extends Model implements SluggableInterface
     }
 
     /**
-     * Todo: Description.
+     * Get category belongs to relation.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

@@ -25,7 +25,7 @@ abstract class AbstractObserver
     /**
      * Flush cache for given tags.
      *
-     * @param $tags
+     * @param $tags array
      */
     protected function clearCacheTags($tags)
     {
@@ -35,7 +35,7 @@ abstract class AbstractObserver
     /**
      * Determine if model uses soft deletes.
      *
-     * @param $model
+     * @param $model \Illuminate\Database\Eloquent\Model
      *
      * @return bool
      */

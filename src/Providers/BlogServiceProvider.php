@@ -128,8 +128,6 @@ class BlogServiceProvider extends ServiceProvider
     /**
      * Publish views.
      *
-     * @todo: Add ability to publish module views.
-     *
      * @return void
      */
     private function publishViews()
