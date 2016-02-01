@@ -117,7 +117,7 @@ class Post extends Model implements SluggableInterface
     }
 
     /**
-     * Todo: Description.
+     * Get comments has many relation.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -127,7 +127,7 @@ class Post extends Model implements SluggableInterface
     }
 
     /**
-     * Todo: Description.
+     * Get comments count has one relation.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
@@ -139,7 +139,7 @@ class Post extends Model implements SluggableInterface
     }
 
     /**
-     * Todo: Description.
+     * Get comments count attribute.
      *
      * @param $value
      *
@@ -151,7 +151,7 @@ class Post extends Model implements SluggableInterface
     }
 
     /**
-     * Todo: Description.
+     * Get latest comment has one relation.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
@@ -161,7 +161,7 @@ class Post extends Model implements SluggableInterface
     }
 
     /**
-     * Todo: Description.
+     * Get tags belongs to many relation.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
@@ -171,7 +171,7 @@ class Post extends Model implements SluggableInterface
     }
 
     /**
-     * Todo: Description.
+     * Get tags count has one relation.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
@@ -183,9 +183,9 @@ class Post extends Model implements SluggableInterface
     }
 
     /**
-     * Todo: Description.
+     * Get tags count attribute.
      *
-     * @param $value
+     * @param int $value
      *
      * @return int
      */
