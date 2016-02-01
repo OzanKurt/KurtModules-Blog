@@ -3,9 +3,9 @@
 namespace Kurt\Modules\Blog\Repositories\Categories;
 
 use Kurt\Modules\Blog\Models\Category;
-use Kurt\Modules\Blog\Repositories\Contracts\CategoriesRepository;
+use Kurt\Modules\Blog\Repositories\Contracts\CategoriesRepositoryInterface;
 
-class EloquentCategoriesRepository implements CategoriesRepository
+class EloquentCategoriesRepository implements CategoriesRepositoryInterface
 {
     /**
      * Model instance.

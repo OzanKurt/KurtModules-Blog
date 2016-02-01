@@ -3,9 +3,9 @@
 namespace Kurt\Modules\Blog\Repositories\Tags;
 
 use Kurt\Modules\Blog\Models\Tag;
-use Kurt\Modules\Blog\Repositories\Contracts\TagsRepository;
+use Kurt\Modules\Blog\Repositories\Contracts\TagsRepositoryInterface;
 
-class EloquentTagsRepository implements TagsRepository
+class EloquentTagsRepository implements TagsRepositoryInterface
 {
     /**
      * Model instance.

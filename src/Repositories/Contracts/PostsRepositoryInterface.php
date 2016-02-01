@@ -4,7 +4,7 @@ namespace Kurt\Modules\Blog\Repositories\Contracts;
 
 use Kurt\Modules\Blog\Models\Post;
 
-interface PostsRepository
+interface PostsRepositoryInterface
 {
 
     /**

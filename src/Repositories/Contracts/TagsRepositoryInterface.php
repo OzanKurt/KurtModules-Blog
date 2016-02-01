@@ -2,12 +2,10 @@
 
 namespace Kurt\Modules\Blog\Repositories\Contracts;
 
-interface TagsRepository
+interface TagsRepositoryInterface
 {
 
     public function findById($id);
-
-    public function findByIdWithCategory($id);
 
     public function findByIdWithPosts($id);
 
@@ -17,10 +15,10 @@ interface TagsRepository
 
     public function getAll();
 
-    public function getAllWithCategory();
+    public function getAllWithPosts();
 
     public function paginateAll($postsPerPage);
 
-    public function paginateAllWithCategory($postsPerPage);
+    public function paginateAllWithPosts($postsPerPage);
 
 }

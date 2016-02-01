@@ -2,7 +2,7 @@
 
 namespace Kurt\Modules\Blog\Repositories\Contracts;
 
-interface CategoriesRepository
+interface CategoriesRepositoryInterface
 {
     /**
      * Find a row by it's id.

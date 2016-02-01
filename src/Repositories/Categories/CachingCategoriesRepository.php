@@ -3,9 +3,9 @@
 namespace Kurt\Modules\Blog\Repositories\Categories;
 
 use Illuminate\Contracts\Cache\Repository;
-use Kurt\Modules\Blog\Repositories\Contracts\CategoriesRepository;
+use Kurt\Modules\Blog\Repositories\Contracts\CategoriesRepositoryInterface;
 
-class CachingCategoriesRepository implements CategoriesRepository
+class CachingCategoriesRepository implements CategoriesRepositoryInterface
 {
     /**
      * Cache duration.

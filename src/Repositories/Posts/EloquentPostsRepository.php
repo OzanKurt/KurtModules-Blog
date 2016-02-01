@@ -3,9 +3,9 @@
 namespace Kurt\Modules\Blog\Repositories\Posts;
 
 use Kurt\Modules\Blog\Models\Post;
-use Kurt\Modules\Blog\Repositories\Contracts\PostsRepository;
+use Kurt\Modules\Blog\Repositories\Contracts\PostsRepositoryInterface;
 
-class EloquentPostsRepository implements PostsRepository
+class EloquentPostsRepository implements PostsRepositoryInterface
 {
     /**
      * Model instance.
