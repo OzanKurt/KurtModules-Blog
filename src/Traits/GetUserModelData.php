@@ -10,7 +10,7 @@ namespace Kurt\Modules\Blog\Traits;
 trait GetUserModelData
 {
     /**
-     * Todo: Description.
+     * Get user model class name with namespace.
      *
      * @return mixed
      */
@@ -20,7 +20,7 @@ trait GetUserModelData
     }
 
     /**
-     * Todo: Description.
+     * Get user model primary key.
      *
      * @return mixed
      */
