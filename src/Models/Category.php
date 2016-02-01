@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Kurt\Modules\Blog\Observers\CategoryObserver;
 use Kurt\Modules\Blog\Traits\GetCountFromRelation;
+use Kurt\Modules\Blog\Traits\GetUserModelData;
 
 /**
  * Class Category
