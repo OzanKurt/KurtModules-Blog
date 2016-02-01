@@ -22,11 +22,23 @@ abstract class AbstractObserver
 
     abstract public function deleting($model);
 
+    /**
+     * Flush cache for given tags.
+     *
+     * @param $tags
+     */
     protected function clearCacheTags($tags)
     {
         Cache::tags($tags)->flush();
     }
 
+    /**
+     * Determine if model uses soft deletes.
+     *
+     * @param $model
+     *
+     * @return bool
+     */
     protected function modelUsesSoftDeletes($model)
     {
         return method_exists(get_class($model), 'bootSoftDeletes');
