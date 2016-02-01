@@ -8,27 +8,27 @@ class CategoryObserver extends AbstractObserver
 {
     public function created($model)
     {
-        // TODO: Implement created() method.
+        //
     }
 
     public function creating($model)
     {
-        // TODO: Implement creating() method.
+        //
     }
 
     public function saved($model)
     {
-        // TODO: Implement saved() method.
+        //
     }
 
     public function saving($model)
     {
-        // TODO: Implement saving() method.
+        //
     }
 
     public function updated($model)
     {
-        // TODO: Implement updated() method.
+        //
     }
 
     public function updating($category)
@@ -38,7 +38,7 @@ class CategoryObserver extends AbstractObserver
 
     public function deleted($model)
     {
-        // TODO: Implement deleted() method.
+        //
     }
 
     public function deleting($category)
