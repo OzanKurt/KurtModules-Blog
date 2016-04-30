@@ -124,4 +124,12 @@ class Category extends Model implements SluggableInterface
     {
         return $this->hasOne(Post::class, 'category_id', 'id')->latest();
     }
+
+    public function scopePopular($query, $descending = true)
+    {
+        $query->selectRaw('blog_categories.*, count(`blog_posts`.`id`) as postsCount')
+            ->leftJoin('blog_posts', 'blog_posts.category_id', '=', 'blog_categories.id')
+            ->groupBy('blog_categories.id')
+            ->orderBy('postsCount', $descending ? 'desc' : 'asc');
+    }
 }
