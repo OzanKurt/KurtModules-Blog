@@ -110,7 +110,7 @@ class Post extends Model implements SluggableInterface
     public function user()
     {
         return $this->belongsTo(
-            $this->getUserModelClass(),
+            $this->getUserModelClassName(),
             'user_id',
             $this->getUserModelPrimaryKey()
         );

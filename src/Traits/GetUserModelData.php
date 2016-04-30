@@ -10,11 +10,21 @@ namespace Kurt\Modules\Blog\Traits;
 trait GetUserModelData
 {
     /**
-     * Get user model class name with namespace.
+     * Get a new user model instance.
      *
      * @return mixed
      */
-    protected function getUserModelClass()
+    protected function getUserModel()
+    {
+        return app(config('auth.providers.users.model'));
+    }
+    
+    /**
+     * Get user model class name with namespace.
+     *
+     * @return string
+     */
+    protected function getUserModelClassName()
     {
         return config('auth.providers.users.model');
     }
@@ -26,7 +36,7 @@ trait GetUserModelData
      */
     protected function getUserModelPrimaryKey()
     {
-        return app($this->getUserModelClass())->getKeyName();
+        return $this->getUserModel()->getKeyName();
     }
 
 }

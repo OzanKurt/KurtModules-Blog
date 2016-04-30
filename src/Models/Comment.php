@@ -85,7 +85,7 @@ class Comment extends Model
     public function user()
     {
         return $this->belongsTo(
-            $this->getUserModelClass(),
+            $this->getUserModelClassName(),
             'user_id',
             $this->getUserModelPrimaryKey()
         );
