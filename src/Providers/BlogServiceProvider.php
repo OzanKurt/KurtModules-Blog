@@ -2,9 +2,13 @@
 
 namespace Kurt\Modules\Blog\Providers;
 
+use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
+use Kurt\Modules\Blog\Console\Commands\SeedCommand;
 use Kurt\Modules\Blog\Models\Category;
+use Kurt\Modules\Blog\Models\Post;
 use Kurt\Modules\Blog\Repositories\Categories\CachingCategoriesRepository;
 use Kurt\Modules\Blog\Repositories\Categories\EloquentCategoriesRepository;
 use Kurt\Modules\Blog\Repositories\Contracts\CategoriesRepositoryInterface;
@@ -20,7 +24,7 @@ class BlogServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    protected $namespace = 'App\Http\Controllers\Blog';
+    protected $namespace = 'App\Http\Controllers';
 
     /**
      * Base path of blog module.
@@ -63,6 +67,10 @@ class BlogServiceProvider extends ServiceProvider
 
         $this->registerRepositories();
 
+        $this->registerFactories();
+
+        $this->registerCommands();
+
         $this->publishViews();
     }
 
@@ -81,7 +89,7 @@ class BlogServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function publishVendor()
+    private function publishVendor()
     {
         $this->publishConfigurations();
 
@@ -95,13 +103,13 @@ class BlogServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function registerRepositories()
+    private function registerRepositories()
     {
-        $this->app->singleton(CategoriesRepositoryInterface::class, function() {
+        $this->app->bind(CategoriesRepositoryInterface::class, function() {
             return $this->instantiateCategoriesRepository();
         });
-        $this->app->singleton(PostsRepositoryInterface::class, EloquentPostsRepository::class);
-        $this->app->singleton(TagsRepositoryInterface::class, EloquentTagsRepository::class);
+        $this->app->bind(PostsRepositoryInterface::class, EloquentPostsRepository::class);
+        $this->app->bind(TagsRepositoryInterface::class, EloquentTagsRepository::class);
     }
 
     /**
@@ -109,7 +117,7 @@ class BlogServiceProvider extends ServiceProvider
      *
      * @return \Kurt\Modules\Blog\Repositories\Categories\CachingCategoriesRepository|\Kurt\Modules\Blog\Repositories\Categories\EloquentCategoriesRepository
      */
-    function instantiateCategoriesRepository()
+    private function instantiateCategoriesRepository()
     {
         $eloquentCategoriesRepository = new EloquentCategoriesRepository(new Category());
 
@@ -123,6 +131,36 @@ class BlogServiceProvider extends ServiceProvider
         );
 
         return $cachingCategoriesRepository;
+    }
+
+    private function registerFactories()
+    {
+        $factory = $this->app->make(Factory::class);
+        
+        $factory->define(Category::class, function(Faker $faker) {
+            $name = $faker->colorName;
+            return [
+                'name' => $name,
+                'slug' => str_slug($name),
+            ];
+        });
+        
+        $factory->define(Post::class, function(Faker $faker) {
+            $name = $faker->colorName;
+            return [
+                'name' => $name,
+                'slug' => str_slug($name),
+            ];
+        });
+    }
+
+    private function registerCommands()
+    {
+        $this->app->singleton('command.kurtmodules-blog.seed', function () {
+            return new SeedCommand();
+        });
+
+        $this->commands('command.kurtmodules-blog.seed');
     }
 
     /**
@@ -144,7 +182,7 @@ class BlogServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function publishConfigurations()
+    private function publishConfigurations()
     {
         $this->publishes([
             $this->basePath.'config/kurt_modules_blog.php' => config_path('kurt_modules_blog.php'),
@@ -156,7 +194,7 @@ class BlogServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function publishRoutes()
+    private function publishRoutes()
     {
         $this->publishes([
             $this->sourcePath.'/Http/blogRoutes.php' => $this->getBlogRoutesPath(),
@@ -168,7 +206,7 @@ class BlogServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function publishMigrations()
+    private function publishMigrations()
     {
         $this->publishes([
             $this->basePath.'/database/migrations/' => base_path('database/migrations'),
@@ -209,6 +247,7 @@ class BlogServiceProvider extends ServiceProvider
         return $this->app->make('config')->get('kurt_modules_blog.debug');
     }
 
+
     /**
      * Get the `cache` from configurations.
      *
@@ -218,7 +257,6 @@ class BlogServiceProvider extends ServiceProvider
     {
         return $this->app->make('config')->get('kurt_modules_blog.cache');
     }
-
 
     /**
      * Get the `blog_routes_path` from configurations.
@@ -237,8 +275,18 @@ class BlogServiceProvider extends ServiceProvider
      *
      * @return bool
      */
-    protected function routesArePublished($blogRoutesPath)
+    private function routesArePublished($blogRoutesPath)
     {
         return file_exists($blogRoutesPath);
+    }
+
+    /**
+     * Get the services provided by the provider.
+     *
+     * @return array
+     */
+    public function provides()
+    {
+        return array('command.ide-helper.generate', 'command.ide-helper.models');
     }
 }
