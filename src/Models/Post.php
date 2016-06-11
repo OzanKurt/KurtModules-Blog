@@ -220,4 +220,12 @@ class Post extends Model implements SluggableInterface
     {
         return $this->getCountFromRelation('tagsCount', $value);
     }
+
+    /**
+     * Get link attribute.
+     * 
+     * @return string
+     */
+    abstract public function getLinkAttribute($value);
+    
 }
