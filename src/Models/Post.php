@@ -223,9 +223,11 @@ class Post extends Model implements SluggableInterface
 
     /**
      * Get link attribute.
+     *
+     * @param null $value
      * 
      * @return string
      */
     abstract public function getLinkAttribute($value);
-    
+
 }
