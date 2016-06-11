@@ -18,7 +18,7 @@ class CreateBlogCommentsTable extends Migration
 
             $table->text('content');
 
-            $userModel = app(config('auth.providers.users.model'));
+            $userModel = app(config('kurt_modules.user_model'));
 
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')

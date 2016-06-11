@@ -5,6 +5,7 @@ namespace Kurt\Modules\Blog\Observers;
 
 class TagObserver extends AbstractObserver
 {
+    
     public function created($tag)
     {
         //

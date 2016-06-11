@@ -2,17 +2,18 @@
 
 namespace Kurt\Modules\Blog\Repositories\Categories;
 
-use Illuminate\Contracts\Cache\Repository;
+use Illuminate\Contracts\Cache\Repository as Cache;
 use Kurt\Modules\Blog\Repositories\Contracts\CategoriesRepositoryInterface;
 
 class CachingCategoriesRepository implements CategoriesRepositoryInterface
 {
+
     /**
      * Cache duration.
      *
      * @var int
      */
-    protected $minutes = 15;
+    protected $minutes = config('kurt_modules.blog.cache_duration');
 
     /**
      * Cache instance.
@@ -31,11 +32,11 @@ class CachingCategoriesRepository implements CategoriesRepositoryInterface
     /**
      * CachingCategoriesRepository constructor.
      *
-     * @param Repository                   $cache
+     * @param Cache                   $cache
      * @param EloquentCategoriesRepository $eloquentCategoriesRepository
      */
     public function __construct(
-        Repository $cache,
+        Cache $cache,
         EloquentCategoriesRepository $eloquentCategoriesRepository
     ) {
         $this->cache = $cache;

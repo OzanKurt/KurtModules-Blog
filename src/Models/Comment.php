@@ -4,9 +4,11 @@ namespace Kurt\Modules\Blog\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
 use Kurt\Modules\Blog\Observers\CommentObserver;
-use Kurt\Modules\Blog\Traits\GetCountFromRelation;
-use Kurt\Modules\Blog\Traits\GetUserModelData;
+
+use Kurt\Modules\Core\Traits\GetCountFromRelation;
+use Kurt\Modules\Core\Traits\GetUserModelData;
 
 /**
  * Class Comment

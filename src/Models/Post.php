@@ -4,11 +4,14 @@ namespace Kurt\Modules\Blog\Models;
 
 use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
 use Kurt\Modules\Blog\Observers\PostObserver;
-use Kurt\Modules\Blog\Traits\GetCountFromRelation;
-use Kurt\Modules\Blog\Traits\GetUserModelData;
+
+use Kurt\Modules\Core\Traits\GetCountFromRelation;
+use Kurt\Modules\Core\Traits\GetUserModelData;
 
 /**
  * Class Post
@@ -68,6 +71,7 @@ class Post extends Model implements SluggableInterface
         'slug',
         'content',
         'user_id',
+        'published_at',
     ];
 
     /**
@@ -79,6 +83,23 @@ class Post extends Model implements SluggableInterface
         'published_at',
         'deleted_at',
     ];
+
+    /**
+     * Post types as an array.
+     *
+     * @var array
+     */
+    public static $types = [
+        Post::TYPE_TEXT,
+        Post::TYPE_IMAGE,
+        POST::TYPE_VIDEO,
+    ];
+
+    const TYPE_TEXT = 0;
+
+    const TYPE_IMAGE = 1;
+
+    const TYPE_VIDEO = 2;
 
     /**
      * The "booting" method of the model.

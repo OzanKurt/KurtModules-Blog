@@ -7,10 +7,11 @@ use Kurt\Modules\Blog\Repositories\Contracts\CategoriesRepositoryInterface;
 
 class EloquentCategoriesRepository implements CategoriesRepositoryInterface
 {
+    
     /**
      * Model instance.
      *
-     * @var Category
+     * @var \Illuminate\Database\Eloquent\Builder|Category
      */
     protected $model;
 

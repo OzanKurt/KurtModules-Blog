@@ -4,11 +4,14 @@ namespace Kurt\Modules\Blog\Models;
 
 use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
 use Kurt\Modules\Blog\Observers\CategoryObserver;
-use Kurt\Modules\Blog\Traits\GetCountFromRelation;
-use Kurt\Modules\Blog\Traits\GetUserModelData;
+
+use Kurt\Modules\Core\Traits\GetCountFromRelation;
+use Kurt\Modules\Core\Traits\GetUserModelData;
 
 /**
  * Class Category
@@ -122,7 +125,7 @@ class Category extends Model implements SluggableInterface
      */
     public function latestPost()
     {
-        return $this->hasOne(Post::class, 'category_id', 'id')->latest();
+        return $this->hasOne(Post::class, 'category_id', 'id')->latest()->limit(1);
     }
 
     public function scopePopular($query, $descending = true)

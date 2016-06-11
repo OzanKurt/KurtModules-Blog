@@ -10,7 +10,7 @@ class EloquentTagsRepository implements TagsRepositoryInterface
     /**
      * Model instance.
      *
-     * @var Tag
+     * @var \Illuminate\Database\Eloquent\Builder|Tag
      */
     protected $model;
 

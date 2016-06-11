@@ -4,11 +4,14 @@ namespace Kurt\Modules\Blog\Models;
 
 use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
 use Kurt\Modules\Blog\Observers\TagObserver;
-use Kurt\Modules\Blog\Traits\GetCountFromRelation;
-use Kurt\Modules\Blog\Traits\GetUserModelData;
+
+use Kurt\Modules\Core\Traits\GetCountFromRelation;
+use Kurt\Modules\Core\Traits\GetUserModelData;
 
 /**
  * Class Tag

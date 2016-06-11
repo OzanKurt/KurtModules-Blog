@@ -9,6 +9,7 @@ namespace Kurt\Modules\Blog\Traits;
  */
 trait GetUserModelData
 {
+
     /**
      * Get a new user model instance.
      *
@@ -16,7 +17,7 @@ trait GetUserModelData
      */
     protected function getUserModel()
     {
-        return app(config('auth.providers.users.model'));
+        return app(config('kurt_modules.user_model'));
     }
     
     /**
@@ -26,7 +27,7 @@ trait GetUserModelData
      */
     protected function getUserModelClassName()
     {
-        return config('auth.providers.users.model');
+        return config('kurt_modules.user_model');
     }
 
     /**

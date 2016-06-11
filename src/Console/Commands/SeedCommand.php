@@ -3,8 +3,11 @@
 namespace Kurt\Modules\Blog\Console\Commands;
 
 use Illuminate\Console\Command;
+
 use Kurt\Modules\Blog\Models\Category;
-use Kurt\Modules\Blog\Traits\GetUserModelData;
+use Kurt\Modules\Blog\Models\Post;
+
+use Kurt\Modules\Core\Traits\GetUserModelData;
 
 class SeedCommand extends Command
 {
@@ -15,7 +18,7 @@ class SeedCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'kurtmodules-blog:seed';
+    protected $signature = 'kurtmodules-blog:seed {--v|verbal}';
 
     /**
      * The console command description.
@@ -23,6 +26,16 @@ class SeedCommand extends Command
      * @var string
      */
     protected $description = 'Seed the database with random data.';
+
+    /**
+     * Default configuration for seeding.
+     * 
+     * @var array
+     */
+    protected $settings = [
+        'categoryCount' => 5,
+        'postCount'     => 25,
+    ];
 
     /**
      * Execute the console command.
@@ -33,13 +46,32 @@ class SeedCommand extends Command
     {
         if ($this->getUserModel()->count() == 0)
         {
-            $this->error("There is no user in the database, cannot seed.");
+            $this->info("There is no user in the database, cannot seed.");
+
+            $createUsers = $this->ask('Do you want to create some users?');
+
+            if (!$createUsers) {
+                exit;
+            }
+            
+            $userCount = $this->ask('How many users do you want to create? (Default = 5');
+
+            if (!is_numeric($userCount)) {
+                $userCount = 5;
+            }
+
+            factory($this->getUserModel())->times($userCount)->create();
+        }
+
+        if ($this->option('verbal')) {
+            $this->settings['categoryCount'] = $this->ask('How many categories should be created?');
+            $this->settings['postCount'] = $this->ask('How many posts should be created?');
         }
         
-        factory(Category::class)->times(5)->create();
+        factory(Category::class)->times($this->settings['categoryCount'])->create();
         
-        factory(Post::class)->times(5)->create();
-        
-        $this->info('Done.');
+        factory(Post::class)->times($this->settings['postCount'])->create();
+
+        $this->info('Seeding completed.');
     }
 }

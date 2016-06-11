@@ -2,23 +2,31 @@
 
 namespace Kurt\Modules\Blog\Providers;
 
+use Carbon\Carbon;
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
+
 use Kurt\Modules\Blog\Console\Commands\SeedCommand;
 use Kurt\Modules\Blog\Models\Category;
 use Kurt\Modules\Blog\Models\Post;
-use Kurt\Modules\Blog\Repositories\Categories\CachingCategoriesRepository;
-use Kurt\Modules\Blog\Repositories\Categories\EloquentCategoriesRepository;
+
 use Kurt\Modules\Blog\Repositories\Contracts\CategoriesRepositoryInterface;
 use Kurt\Modules\Blog\Repositories\Contracts\PostsRepositoryInterface;
 use Kurt\Modules\Blog\Repositories\Contracts\TagsRepositoryInterface;
+
+use Kurt\Modules\Blog\Repositories\Categories\CachingCategoriesRepository;
+use Kurt\Modules\Blog\Repositories\Categories\EloquentCategoriesRepository;
 use Kurt\Modules\Blog\Repositories\Posts\EloquentPostsRepository;
 use Kurt\Modules\Blog\Repositories\Tags\EloquentTagsRepository;
 
+use Kurt\Modules\Core\Traits\GetUserModelData;
+
 class BlogServiceProvider extends ServiceProvider
 {
+    use GetUserModelData;
+
     /**
      * Default namespace for blog routes.
      *
@@ -81,7 +89,7 @@ class BlogServiceProvider extends ServiceProvider
      */
     private function initConfig()
     {
-        $this->mergeConfigFrom($this->basePath.'/config/kurt_modules_blog.php', 'kurt_modules_blog');
+        $this->mergeConfigFrom($this->basePath.'/config/kurt_modules.php', 'kurt_modules');
     }
 
     /**
@@ -146,10 +154,18 @@ class BlogServiceProvider extends ServiceProvider
         });
         
         $factory->define(Post::class, function(Faker $faker) {
-            $name = $faker->colorName;
+            $userIds = $this->getUserModel()->lists('id')->toArray();
+            $categoryIds = Category::lists('id')->toArray();
+
+            $name = $faker->realText(40);
+
             return [
-                'name' => $name,
+                'title' => $name,
                 'slug' => str_slug($name),
+                'content' => $faker->realText(400),
+                'user_id' => $faker->randomElement($userIds),
+                'category_id' => $faker->randomElement($categoryIds),
+                'published_at' => Carbon::now()->addDays(rand(0, 2)),
             ];
         });
     }
@@ -185,7 +201,7 @@ class BlogServiceProvider extends ServiceProvider
     private function publishConfigurations()
     {
         $this->publishes([
-            $this->basePath.'config/kurt_modules_blog.php' => config_path('kurt_modules_blog.php'),
+            $this->basePath.'config/kurt_modules.php' => config_path('kurt_modules.php'),
         ], 'config');
     }
 
@@ -244,7 +260,7 @@ class BlogServiceProvider extends ServiceProvider
      */
     private function getBlogDebug()
     {
-        return $this->app->make('config')->get('kurt_modules_blog.debug');
+        return $this->app->make('config')->get('kurt_modules.debug');
     }
 
 
@@ -255,17 +271,17 @@ class BlogServiceProvider extends ServiceProvider
      */
     private function getBlogCache()
     {
-        return $this->app->make('config')->get('kurt_modules_blog.cache');
+        return $this->app->make('config')->get('kurt_modules.blog.cache');
     }
 
     /**
-     * Get the `blog_routes_path` from configurations.
+     * Get the `kurt_modules.blog.routes_path` from configurations.
      *
      * @return string
      */
     private function getBlogRoutesPath()
     {
-        return $this->app->make('config')->get('kurt_modules_blog.blog_routes_path');
+        return $this->app->make('config')->get('kurt_modules.blog.routes_path');
     }
 
     /**

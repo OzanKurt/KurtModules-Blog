@@ -19,9 +19,11 @@ class CreateBlogPostsTable extends Migration
             $table->string('title');
             $table->string('slug')->index();
 
+            $table->integer('type')->index();
+
             $table->text('content');
 
-            $userModel = app(config('auth.providers.users.model'));
+            $userModel = app(config('kurt_modules.user_model'));
 
             $table->integer('user_id')->unsigned()->nullable();
             $table->foreign('user_id')

@@ -6,6 +6,7 @@ use Cache;
 
 abstract class AbstractObserver
 {
+    
     abstract public function created($model);
 
     abstract public function creating($model);

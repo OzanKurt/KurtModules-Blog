@@ -6,6 +6,7 @@ use Kurt\Modules\Blog\Repositories\Categories\CachingCategoriesRepository;
 
 class CategoryObserver extends AbstractObserver
 {
+    
     public function created($model)
     {
         //

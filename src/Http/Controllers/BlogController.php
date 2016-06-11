@@ -10,6 +10,7 @@ use Kurt\Modules\Blog\Repositories\Contracts\TagsRepositoryInterface;
 
 /**
  * Class BlogController
+ * 
  * @package Kurt\Modules\Blog\Http\Controllers
  */
 class BlogController extends Controller
