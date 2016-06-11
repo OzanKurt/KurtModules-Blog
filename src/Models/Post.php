@@ -20,7 +20,9 @@ use Kurt\Modules\Core\Traits\GetUserModelData;
  * @property integer                                                                           $id
  * @property string                                                                            $title
  * @property string                                                                            $slug
+ * @property string                                                                            $media
  * @property string                                                                            $content
+ * @property integer                                                                           $type
  * @property integer                                                                           $user_id
  * @property integer                                                                           $category_id
  * @property \Carbon\Carbon                                                                    $created_at
@@ -69,7 +71,11 @@ class Post extends Model implements SluggableInterface
     protected $fillable = [
         'title',
         'slug',
+        'type',
+        'media',
         'content',
+        'view_count',
+        'last_viewer_ip',
         'user_id',
         'published_at',
     ];

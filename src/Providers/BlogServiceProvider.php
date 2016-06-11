@@ -162,6 +162,7 @@ class BlogServiceProvider extends ServiceProvider
             return [
                 'title' => $name,
                 'slug' => str_slug($name),
+                'type' => Post::TYPE_TEXT,
                 'content' => $faker->realText(400),
                 'user_id' => $faker->randomElement($userIds),
                 'category_id' => $faker->randomElement($categoryIds),

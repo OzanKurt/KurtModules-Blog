@@ -3,8 +3,12 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
+use Kurt\Modules\Core\Traits\GetUserModelData;
+
 class CreateBlogPostsTable extends Migration
 {
+    use GetUserModelData;
+
     /**
      * Run the migrations.
      *
@@ -21,9 +25,13 @@ class CreateBlogPostsTable extends Migration
 
             $table->integer('type')->index();
 
+            $table->string('media')->nullable();
             $table->text('content');
 
-            $userModel = app(config('kurt_modules.user_model'));
+            $table->integer('view_count')->unsigned();
+            $table->integer('last_viewers_ip');
+
+            $userModel = $this->getUserModel();
 
             $table->integer('user_id')->unsigned()->nullable();
             $table->foreign('user_id')

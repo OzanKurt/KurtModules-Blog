@@ -3,8 +3,12 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
+use Kurt\Modules\Core\Traits\GetUserModelData;
+
 class CreateBlogCommentsTable extends Migration
 {
+    use GetUserModelData;
+
     /**
      * Run the migrations.
      *
@@ -18,7 +22,7 @@ class CreateBlogCommentsTable extends Migration
 
             $table->text('content');
 
-            $userModel = app(config('kurt_modules.user_model'));
+            $userModel = $this->getUserModel();
 
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')
