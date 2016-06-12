@@ -18,7 +18,7 @@ class SeedCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'kurtmodules-blog:seed {--v|verbal}';
+    protected $signature = 'kurtmodules-blog:seed';
 
     /**
      * The console command description.
@@ -48,19 +48,19 @@ class SeedCommand extends Command
         {
             $this->info("There is no user in the database, cannot seed.");
 
-            $createUsers = $this->ask('Do you want to create some users?');
+            $createUsers = $this->ask('Do you want to create some users? (y/N)');
 
-            if (!$createUsers) {
+            if (!in_array(strtolower($createUsers), ['yes', 'y'])) {
                 exit;
             }
             
-            $userCount = $this->ask('How many users do you want to create? (Default = 5');
+            $userCount = $this->ask('How many users do you want to create?');
 
             if (!is_numeric($userCount)) {
                 $userCount = 5;
             }
 
-            factory($this->getUserModel())->times($userCount)->create();
+            factory($this->getUserModelClassName())->times($userCount)->create();
         }
 
         if ($this->option('verbal')) {

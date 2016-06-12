@@ -222,12 +222,15 @@ class Post extends Model implements SluggableInterface
     }
 
     /**
-     * Get link attribute.
-     *
-     * @param null $value
+     * Popularity by view count.
      * 
-     * @return string
+     * @param  [type]  $query      [description]
+     * @param  boolean $descending [description]
+     * 
+     * @return [type]              [description]
      */
-    abstract public function getLinkAttribute($value);
-
+    public function scopePopular($query, $descending = true)
+    {
+        $query->orderBy('view_count', $descending ? 'desc' : 'asc');
+    }
 }
