@@ -123,6 +123,17 @@ class Post extends Model implements SluggableInterface
     const TYPE_CAROUSEL = 3;
 
     /**
+     * Video types as an array.
+     *
+     * @var array
+     */
+    public static $videoTypes = [
+        0 => Post::VIDEO_TYPE_YOUTUBE,
+        1 => Post::VIDEO_TYPE_VIMEO,
+        2 => POST::VIDEO_TYPE_DAILYMOTION,
+    ];
+
+    /**
      * The "booting" method of the model.
      *
      * @return void
@@ -271,20 +282,20 @@ class Post extends Model implements SluggableInterface
     public function getMediaAttribute($value)
     {
         switch ($this->type) {
-            case self::TYPE_TEXT:
+            case TYPE_TEXT:
                 return null;
                 break;
-            case self::TYPE_IMAGE:
+            case TYPE_IMAGE:
                 return $this->media;
                 break;
-            case self::TYPE_VIDEO:
+            case TYPE_VIDEO:
                 return $this->media;
                 break;
-            case self::TYPE_CAROUSEL:
+            case TYPE_CAROUSEL:
                 return json_decode($this->media, true);
                 break;
             default:
-                throw new \Exception("Invalid media type.");
+                throw new \Exception("Posts media type is invalid.");
                 break;
         }
     }
@@ -294,23 +305,23 @@ class Post extends Model implements SluggableInterface
      * 
      * @param  mixed $value
      */
-    public function getMediaAttribute($value)
+    public function setMediaAttribute($value)
     {
         switch ($this->type) {
-            case self::TYPE_TEXT:
+            case TYPE_TEXT:
                 $result = null;
                 break;
-            case self::TYPE_IMAGE:
+            case TYPE_IMAGE:
                 $result = $this->media;
                 break;
-            case self::TYPE_VIDEO:
+            case TYPE_VIDEO:
                 $result = $this->media;
                 break;
-            case self::TYPE_CAROUSEL:
+            case TYPE_CAROUSEL:
                 $result = json_encode($this->media);
                 break;
             default:
-                throw new \Exception("Invalid media type.");
+                throw new \Exception("Posts media type is invalid.");
                 break;
         }
 
@@ -325,16 +336,16 @@ class Post extends Model implements SluggableInterface
     public function getThumbnailAttribute()
     {
         switch ($this->type) {
-            case self::TYPE_TEXT:
+            case TYPE_TEXT:
                 $result = null;
                 break;
-            case self::TYPE_IMAGE:
+            case TYPE_IMAGE:
                 $result = $this->media;
                 break;
-            case self::TYPE_VIDEO:
-                $result = $this->media;
+            case TYPE_VIDEO:
+                $result = $this->getVideoThumbnail();
                 break;
-            case self::TYPE_CAROUSEL:
+            case TYPE_CAROUSEL:
                 $result = json_encode($this->media)[0];
                 break;
             default:
@@ -343,5 +354,123 @@ class Post extends Model implements SluggableInterface
         }
 
         return $result;
+    }
+
+    /**
+     * Get the thumbnail of youtube video.
+     * 
+     * @return string|null Thumbnail URL.
+     */
+    public function getVideoTypeAttribute()
+    {
+        if ($this->type != TYPE_VIDEO) {
+            throw new \Exception("This posts media type is not `Video`, cannot get `videoType`.");
+        }
+        
+        if (getDailyMotionId($this->media)) {
+            return VIDEO_TYPE_DAILYMOTION;
+        } elseif (getVimeoId($this->media)) {
+            return VIDEO_TYPE_VIMEO;
+        } elseif (getYoutubeId($this->media)) {
+            return VIDEO_TYPE_YOUTUBE;
+        }
+    }
+
+    /**
+     * Get the video id of the post.
+     * 
+     * @return string
+     */
+    private function getVideoIdAttribute()
+    {
+        switch ($this->videoType) {
+            case VIDEO_TYPE_DAILYMOTION:
+                return getDailyMotionId($this->media);
+                break;
+            case VIDEO_TYPE_VIMEO:
+                return getVimeoId($this->media);
+                break;
+            case VIDEO_TYPE_YOUTUBE:
+                return getYoutubeId($this->media);
+                break;
+            default:
+                throw new \Exception("This posts video type is not valid.");
+                break;
+        }
+    }
+
+    /**
+     * Get the video thumbnail of the post.
+     * 
+     * @return string
+     */
+    private function getVideoThumbnail()
+    {
+        $qualities = config('kurt_modules.blog.video_thumbnail_qualities');
+
+        switch ($this->videoType) {
+            case VIDEO_TYPE_DAILYMOTION:
+                return 'http://www.dailymotion.com/thumbnail/video/' . $this->videoId;
+                break;
+            case VIDEO_TYPE_VIMEO:
+                $result = file_get_contents('http://vimeo.com/api/v2/video/' . $this->videoId . '.php');
+
+                $hash = unserialize($result);
+
+                return $hash[0][$qualities['vimeo']];
+                break;
+            case VIDEO_TYPE_YOUTUBE:
+                return 'http://img.youtube.com/vi/' . $this->videoId . '/' . $qualities['youtube'] . '.jpg';
+                break;
+            default:
+                throw new \Exception("This posts video type is not valid.");
+                break;
+        }
+    }
+
+    /**
+     * Get video location url.
+     * 
+     * @return string Url of the video.
+     */
+    public function getVideoLocationAttribute()
+    {
+        switch ($this->videoType) {
+            case VIDEO_TYPE_DAILYMOTION:
+                return 'http://www.dailymotion.com/embed/video/' . $this->videoId;
+                break;
+            case VIDEO_TYPE_VIMEO:
+                return 'http://player.vimeo.com/video/' . $this->videoId;
+                break;
+            case VIDEO_TYPE_YOUTUBE:
+                return 'http://www.youtube.com/embed/' . $this->videoId;
+                break;
+            default:
+                throw new \Exception("This posts video type is not valid.");
+                break;
+        }
+    }
+
+    /**
+     * Get the html to embed the video.
+     * 
+     * @return string
+     */
+    public function getVideoEmbedAttribute()
+    {
+        $html = "<style>
+                .embed-container { 
+                    position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } 
+                .embed-container iframe, .embed-container object, .embed-container embed { 
+                    position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+                </style>";
+
+        $html .= "<div class='embed-container'>
+                    <iframe src=" . $this->videoLocation . " frameborder='0' 
+                        awebkitAllowFullScreen mozallowfullscreen llowfullscreen
+                    ></iframe>
+                </div>";
+
+        return $html;
     }
 }

@@ -33,6 +33,22 @@ return [
         'routes_path' => app_path('Http/blogRoutes.php'),
 
         /**
+         * Default quality for video posts.
+         */
+        'video_thumbnail_qualityies' => [
+            
+            /**
+             * `thumbnail_small`, `thumbnail_medium`, `thumbnail_large`
+             */
+            'vimeo' => 'default',
+            
+            /**
+             * `0`, `1`, `2`, `3`, `default`, `hqdefault`, `mqdefault`, `sddefault`, `maxresdefault`, 
+             */
+            'youtube' => 'default',
+        ],
+
+        /**
          * Should comments be approved by default while saving to database.
          */
         'preapproved_comments' => true,

@@ -19,6 +19,9 @@
   "autoload": {
     "psr-4": {
       "Kurt\\Modules\\Blog\\": "src/"
-    }
+    },
+    "files": [
+      "src/video_functions.php"
+    ]
   }
 }
