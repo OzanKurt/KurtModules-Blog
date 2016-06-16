@@ -289,17 +289,17 @@ class Post extends Model implements SluggableInterface
     public function getMediaAttribute($value)
     {
         switch ($this->type) {
-            case TYPE_TEXT:
+            case self::TYPE_TEXT:
                 return null;
                 break;
-            case TYPE_IMAGE:
-                return $this->media;
+            case self::TYPE_IMAGE:
+                return $value;
                 break;
-            case TYPE_VIDEO:
-                return $this->media;
+            case self::TYPE_VIDEO:
+                return $value;
                 break;
-            case TYPE_CAROUSEL:
-                return json_decode($this->media, true);
+            case self::TYPE_CAROUSEL:
+                return json_decode($value, true);
                 break;
             default:
                 throw new \Exception("Posts media type is invalid.");
@@ -315,16 +315,16 @@ class Post extends Model implements SluggableInterface
     public function setMediaAttribute($value)
     {
         switch ($this->type) {
-            case TYPE_TEXT:
+            case self::TYPE_TEXT:
                 $result = null;
                 break;
-            case TYPE_IMAGE:
+            case self::TYPE_IMAGE:
                 $result = $this->media;
                 break;
-            case TYPE_VIDEO:
+            case self::TYPE_VIDEO:
                 $result = $this->media;
                 break;
-            case TYPE_CAROUSEL:
+            case self::TYPE_CAROUSEL:
                 $result = json_encode($this->media);
                 break;
             default:
@@ -343,16 +343,16 @@ class Post extends Model implements SluggableInterface
     public function getThumbnailAttribute()
     {
         switch ($this->type) {
-            case TYPE_TEXT:
+            case self::TYPE_TEXT:
                 $result = null;
                 break;
-            case TYPE_IMAGE:
+            case self::TYPE_IMAGE:
                 $result = $this->media;
                 break;
-            case TYPE_VIDEO:
+            case self::TYPE_VIDEO:
                 $result = $this->getVideoThumbnail();
                 break;
-            case TYPE_CAROUSEL:
+            case self::TYPE_CAROUSEL:
                 $result = json_encode($this->media)[0];
                 break;
             default:
@@ -370,16 +370,16 @@ class Post extends Model implements SluggableInterface
      */
     public function getVideoTypeAttribute()
     {
-        if ($this->type != TYPE_VIDEO) {
+        if ($this->type != self::TYPE_VIDEO) {
             throw new \Exception("This posts media type is not `Video`, cannot get `videoType`.");
         }
         
         if (getDailyMotionId($this->media)) {
-            return VIDEO_TYPE_DAILYMOTION;
+            return self::VIDEO_TYPE_DAILYMOTION;
         } elseif (getVimeoId($this->media)) {
-            return VIDEO_TYPE_VIMEO;
+            return self::VIDEO_TYPE_VIMEO;
         } elseif (getYoutubeId($this->media)) {
-            return VIDEO_TYPE_YOUTUBE;
+            return self::VIDEO_TYPE_YOUTUBE;
         }
     }
 
@@ -391,13 +391,13 @@ class Post extends Model implements SluggableInterface
     private function getVideoIdAttribute()
     {
         switch ($this->videoType) {
-            case VIDEO_TYPE_DAILYMOTION:
+            case self::VIDEO_TYPE_DAILYMOTION:
                 return getDailyMotionId($this->media);
                 break;
-            case VIDEO_TYPE_VIMEO:
+            case self::VIDEO_TYPE_VIMEO:
                 return getVimeoId($this->media);
                 break;
-            case VIDEO_TYPE_YOUTUBE:
+            case self::VIDEO_TYPE_YOUTUBE:
                 return getYoutubeId($this->media);
                 break;
             default:
@@ -416,17 +416,17 @@ class Post extends Model implements SluggableInterface
         $qualities = config('kurt_modules.blog.video_thumbnail_qualities');
 
         switch ($this->videoType) {
-            case VIDEO_TYPE_DAILYMOTION:
+            case self::VIDEO_TYPE_DAILYMOTION:
                 return 'http://www.dailymotion.com/thumbnail/video/' . $this->videoId;
                 break;
-            case VIDEO_TYPE_VIMEO:
+            case self::VIDEO_TYPE_VIMEO:
                 $result = file_get_contents('http://vimeo.com/api/v2/video/' . $this->videoId . '.php');
 
                 $hash = unserialize($result);
 
                 return $hash[0][$qualities['vimeo']];
                 break;
-            case VIDEO_TYPE_YOUTUBE:
+            case self::VIDEO_TYPE_YOUTUBE:
                 return 'http://img.youtube.com/vi/' . $this->videoId . '/' . $qualities['youtube'] . '.jpg';
                 break;
             default:
@@ -443,13 +443,13 @@ class Post extends Model implements SluggableInterface
     public function getVideoLocationAttribute()
     {
         switch ($this->videoType) {
-            case VIDEO_TYPE_DAILYMOTION:
+            case self::VIDEO_TYPE_DAILYMOTION:
                 return 'http://www.dailymotion.com/embed/video/' . $this->videoId;
                 break;
-            case VIDEO_TYPE_VIMEO:
+            case self::VIDEO_TYPE_VIMEO:
                 return 'http://player.vimeo.com/video/' . $this->videoId;
                 break;
-            case VIDEO_TYPE_YOUTUBE:
+            case self::VIDEO_TYPE_YOUTUBE:
                 return 'http://www.youtube.com/embed/' . $this->videoId;
                 break;
             default:

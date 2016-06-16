@@ -35,7 +35,7 @@ return [
         /**
          * Default quality for video posts.
          */
-        'video_thumbnail_qualityies' => [
+        'video_thumbnail_qualities' => [
             
             /**
              * `thumbnail_small`, `thumbnail_medium`, `thumbnail_large`

@@ -85,7 +85,7 @@ class Comment extends Model
      * 
      * @param static
      */
-    public static function create($attributes)
+    public static function create(array $attributes = [])
     {
         if (!array_key_exists('approved', $attributes)) {
             $attributes['approved'] = config('kurt_modules.blog.preapproved_comments');
