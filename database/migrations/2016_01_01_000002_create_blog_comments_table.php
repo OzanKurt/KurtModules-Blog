@@ -50,6 +50,6 @@ class CreateBlogCommentsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('blog_posts');
+        Schema::drop('blog_comments');
     }
 }
