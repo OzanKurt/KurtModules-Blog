@@ -388,7 +388,7 @@ class Post extends Model implements SluggableInterface
      * 
      * @return string
      */
-    private function getVideoIdAttribute()
+    public function getVideoIdAttribute()
     {
         switch ($this->videoType) {
             case self::VIDEO_TYPE_DAILYMOTION:
