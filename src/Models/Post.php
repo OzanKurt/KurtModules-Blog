@@ -353,7 +353,7 @@ class Post extends Model implements SluggableInterface
                 $result = $this->getVideoThumbnail();
                 break;
             case self::TYPE_CAROUSEL:
-                $result = json_encode($this->media)[0];
+                $result = $this->media[0];
                 break;
             default:
                 throw new \Exception("Invalid media type.");
