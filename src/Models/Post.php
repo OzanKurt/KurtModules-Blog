@@ -130,8 +130,15 @@ class Post extends Model implements SluggableInterface
     public static $videoTypes = [
         0 => Post::VIDEO_TYPE_YOUTUBE,
         1 => Post::VIDEO_TYPE_VIMEO,
-        2 => POST::VIDEO_TYPE_DAILYMOTION,
+        2 => Post::VIDEO_TYPE_DAILYMOTION,
     ];
+
+    /**
+     * The `videoType` attribute.
+     */
+    const VIDEO_TYPE_YOUTUBE = 0;
+    const VIDEO_TYPE_VIMEO = 1;
+    const VIDEO_TYPE_DAILYMOTION = 2;
 
     /**
      * The "booting" method of the model.

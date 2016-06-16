@@ -63,7 +63,7 @@ class SeedCommand extends Command
             factory($this->getUserModelClassName())->times($userCount)->create();
         }
 
-        if ($this->option('verbal')) {
+        if ($this->option('verbose')) {
             $this->settings['categoryCount'] = $this->ask('How many categories should be created?');
             $this->settings['postCount'] = $this->ask('How many posts should be created?');
         }

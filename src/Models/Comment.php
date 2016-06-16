@@ -133,7 +133,7 @@ class Comment extends Model
      * 
      * @return $this
      */
-    public function approve($state == true)
+    public function approve($state = true)
     {
         $this->approved == $state;
 
