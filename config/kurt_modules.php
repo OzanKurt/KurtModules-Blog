@@ -32,6 +32,11 @@ return [
          */
         'routes_path' => app_path('Http/blogRoutes.php'),
 
+        /**
+         * Should comments be approved by default while saving to database.
+         */
+        'preapproved_comments' => true,
+
     ],
 
     /**

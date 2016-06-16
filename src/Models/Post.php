@@ -96,16 +96,31 @@ class Post extends Model implements SluggableInterface
      * @var array
      */
     public static $types = [
-        Post::TYPE_TEXT,
-        Post::TYPE_IMAGE,
-        POST::TYPE_VIDEO,
+        0 => Post::TYPE_TEXT,
+        1 => Post::TYPE_IMAGE,
+        2 => POST::TYPE_VIDEO,
+        3 => POST::TYPE_CAROUSEL,
     ];
 
+    /**
+     * The `media` column will be null.
+     */
     const TYPE_TEXT = 0;
 
+    /**
+     * The `media` column will be a `string`.
+     */
     const TYPE_IMAGE = 1;
 
+    /**
+     * The `media` column will be a `string`.
+     */
     const TYPE_VIDEO = 2;
+
+    /**
+     * The `media` column will be a `string[]`.
+     */
+    const TYPE_CAROUSEL = 3;
 
     /**
      * The "booting" method of the model.
@@ -232,5 +247,101 @@ class Post extends Model implements SluggableInterface
     public function scopePopular($query, $descending = true)
     {
         $query->orderBy('view_count', $descending ? 'desc' : 'asc');
+    }
+
+    /**
+     * Determine if the posts media type is equal to the given type.
+     * 
+     * @param  int  $type One of the constants from this class.
+     * 
+     * @return boolean
+     */
+    public function isMediaType($type)
+    {
+        return $this->type == $type;
+    }
+
+    /**
+     * Get the media value in a better and fitting type. 
+     * 
+     * @param  string $value
+     * 
+     * @return mixed
+     */
+    public function getMediaAttribute($value)
+    {
+        switch ($this->type) {
+            case self::TYPE_TEXT:
+                return null;
+                break;
+            case self::TYPE_IMAGE:
+                return $this->media;
+                break;
+            case self::TYPE_VIDEO:
+                return $this->media;
+                break;
+            case self::TYPE_CAROUSEL:
+                return json_decode($this->media, true);
+                break;
+            default:
+                throw new \Exception("Invalid media type.");
+                break;
+        }
+    }
+
+    /**
+     * Set the media value in a better and fitting type. 
+     * 
+     * @param  mixed $value
+     */
+    public function getMediaAttribute($value)
+    {
+        switch ($this->type) {
+            case self::TYPE_TEXT:
+                $result = null;
+                break;
+            case self::TYPE_IMAGE:
+                $result = $this->media;
+                break;
+            case self::TYPE_VIDEO:
+                $result = $this->media;
+                break;
+            case self::TYPE_CAROUSEL:
+                $result = json_encode($this->media);
+                break;
+            default:
+                throw new \Exception("Invalid media type.");
+                break;
+        }
+
+        $this->attributes['media'] = $result;
+    }
+
+    /**
+     * Get the thumbnail image path of the post.
+     * 
+     * @return string|null
+     */
+    public function getThumbnailAttribute()
+    {
+        switch ($this->type) {
+            case self::TYPE_TEXT:
+                $result = null;
+                break;
+            case self::TYPE_IMAGE:
+                $result = $this->media;
+                break;
+            case self::TYPE_VIDEO:
+                $result = $this->media;
+                break;
+            case self::TYPE_CAROUSEL:
+                $result = json_encode($this->media)[0];
+                break;
+            default:
+                throw new \Exception("Invalid media type.");
+                break;
+        }
+
+        return $result;
     }
 }

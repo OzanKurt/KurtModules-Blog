@@ -20,6 +20,8 @@ class CreateBlogCommentsTable extends Migration
 
             $table->increments('id');
 
+            $table->boolean('approved');
+            
             $table->text('content');
 
             $userModel = $this->getUserModel();

@@ -18,6 +18,7 @@ use Kurt\Modules\Core\Traits\GetUserModelData;
  * @property string                              $content
  * @property integer                             $user_id
  * @property integer                             $post_id
+ * @property boolean                             $approved
  * @property \Carbon\Carbon                      $created_at
  * @property \Carbon\Carbon                      $updated_at
  * @property \Carbon\Carbon                      $deleted_at
@@ -44,6 +45,7 @@ class Comment extends Model
      */
     protected $fillable = [
         'content',
+        'approved',
         'user_id',
         'post_id',
     ];
@@ -58,6 +60,15 @@ class Comment extends Model
     ];
 
     /**
+     * Casts columns to requested types.
+     * 
+     * @var array
+     */
+    protected $casts = [
+        'approved' => 'boolean',
+    ];
+
+    /**
      * The "booting" method of the model.
      *
      * @return void
@@ -67,6 +78,20 @@ class Comment extends Model
         parent::boot();
 
         self::observe(new CommentObserver());
+    }
+
+    /**
+     * Overwrite parents create to set a default approval state.
+     * 
+     * @param static
+     */
+    public static function create($attributes)
+    {
+        if (!array_key_exists('approved', $attributes)) {
+            $attributes['approved'] = config('kurt_modules.blog.preapproved_comments');
+        }
+
+        return parent::create($attributes);
     }
 
     /**
@@ -91,5 +116,39 @@ class Comment extends Model
             'user_id',
             $this->getUserModelPrimaryKey()
         );
+    }
+
+    /**
+     * Get is the comment is approved.
+     * 
+     * @return boolean
+     */
+    public function isApproved()
+    {
+        return $this->approved;
+    }
+
+    /**
+     * Update the comment as approved in the database.
+     * 
+     * @return $this
+     */
+    public function approve($state == true)
+    {
+        $this->approved == $state;
+
+        $this->save();
+
+        return $this;
+    }
+
+    /**
+     * Update the comment as disapproved in the database.
+     * 
+     * @return $this
+     */
+    public function disapprove()
+    {
+        return $this->approve(false);
     }
 }
