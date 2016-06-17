@@ -10,7 +10,7 @@
     }
   ],
   "require": {
-    "ozankurt/modules-core": "dev-master",
+    "ozankurt/modules-core": "^0.1.0",
     "cviebrock/eloquent-sluggable": "^3.1"
   },
   "require-dev": {
