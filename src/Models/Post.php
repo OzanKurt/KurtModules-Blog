@@ -77,6 +77,7 @@ class Post extends Model implements SluggableInterface
         'view_count',
         'last_viewer_ip',
         'user_id',
+        'category_id',
         'published_at',
     ];
 
@@ -98,8 +99,8 @@ class Post extends Model implements SluggableInterface
     public static $types = [
         0 => Post::TYPE_TEXT,
         1 => Post::TYPE_IMAGE,
-        2 => POST::TYPE_VIDEO,
-        3 => POST::TYPE_CAROUSEL,
+        2 => Post::TYPE_VIDEO,
+        3 => Post::TYPE_CAROUSEL,
     ];
 
     /**
@@ -319,13 +320,13 @@ class Post extends Model implements SluggableInterface
                 $result = null;
                 break;
             case self::TYPE_IMAGE:
-                $result = $this->media;
+                $result = $value;
                 break;
             case self::TYPE_VIDEO:
-                $result = $this->media;
+                $result = $value;
                 break;
             case self::TYPE_CAROUSEL:
-                $result = json_encode($this->media);
+                $result = json_encode($value);
                 break;
             default:
                 throw new \Exception("Posts media type is invalid.");
