@@ -23,6 +23,11 @@ use Kurt\Modules\Blog\Repositories\Tags\EloquentTagsRepository;
 
 use Kurt\Modules\Core\Traits\GetUserModelData;
 
+use Illuminate\Foundation\AliasLoader;
+
+use GrahamCampbell\Markdown\Facades\Markdown;
+use GrahamCampbell\Markdown\MarkdownServiceProvider;
+
 class BlogServiceProvider extends ServiceProvider
 {
     use GetUserModelData;
@@ -78,6 +83,8 @@ class BlogServiceProvider extends ServiceProvider
         $this->registerFactories();
 
         $this->registerCommands();
+
+        $this->registerVendors();
 
         $this->publishViews();
     }
@@ -180,6 +187,15 @@ class BlogServiceProvider extends ServiceProvider
         $this->commands('command.kurtmodules-blog.seed');
     }
 
+    public function registerVendors()
+    {
+        $this->app->register(MarkdownServiceProvider::class);
+
+        $loader = AliasLoader::getInstance();
+
+        $loader->alias('Markdown', Markdown::class);
+    }
+
     /**
      * Publish views.
      *
@@ -202,7 +218,7 @@ class BlogServiceProvider extends ServiceProvider
     private function publishConfigurations()
     {
         $this->publishes([
-            $this->basePath.'config/kurt_modules.php' => config_path('kurt_modules.php'),
+            $this->basePath.'/config/kurt_modules.php' => config_path('kurt_modules.php'),
         ], 'config');
     }
 
