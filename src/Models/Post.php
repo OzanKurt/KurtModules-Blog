@@ -268,6 +268,42 @@ class Post extends Model implements SluggableInterface
     }
 
     /**
+     * [scopeInCategory description]
+     * 
+     * @param  [type] $query [description]
+     * @param  [type] $id    [description]
+     * 
+     * @return [type]        [description]
+     */
+    public function scopeInCategory($query, $id)
+    {
+        $query->where('category_id', '=', $id);
+    }
+
+    /**
+     * [scopeWithTags description]
+     * 
+     * @param  [type]  $query [description]
+     * @param  array   $tagIds   Tag id's
+     * @param  boolean $and   If `true` posts should have all the given tags
+     * 
+     * @return [type]         [description]
+     */
+    public function scopeWithTags($query, $tagIds = [], $and = false)
+    {
+        if (!is_array($tagIds)) {
+            $tagIds = [$tagIds];
+        }
+        
+        $query->join('blog_post_tag', 'blog_posts.id', '=', 'blog_post_tag.post_id')
+            ->whereIn('blog_post_tag.tag_id', $tagIds)
+            ->groupBy('blog_post_tag.post_id')
+            ->havingRaw('COUNT(DISTINCT `blog_post_tag`.`tag_id`) = ?', [
+                count($tagIds)
+            ]);
+    }
+
+    /**
      * Determine if the posts media type is equal to the given type.
      * 
      * @param  int  $type One of the constants from this class.
