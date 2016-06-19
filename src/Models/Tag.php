@@ -5,7 +5,6 @@ namespace Kurt\Modules\Blog\Models;
 use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Kurt\Modules\Blog\Observers\TagObserver;
@@ -91,7 +90,7 @@ class Tag extends Model implements SluggableInterface
      */
     public function posts()
     {
-        return $this->belongsToMany(Post::class, 'blog_post_tag', 'tag_id', 'post_id');
+        return $this->belongsToMany($this->getModel('post'), 'blog_post_tag', 'tag_id', 'post_id');
     }
 
     /**
@@ -101,7 +100,7 @@ class Tag extends Model implements SluggableInterface
      */
     public function postsCount()
     {
-        return $this->hasOne(Post::class)
+        return $this->hasOne($this->getModel('post'))
             ->selectRaw('tag_id, count(*) as aggregate')
             ->groupBy('tag_id');
     }

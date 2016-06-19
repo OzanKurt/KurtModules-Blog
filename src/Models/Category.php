@@ -5,7 +5,6 @@ namespace Kurt\Modules\Blog\Models;
 use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Kurt\Modules\Blog\Observers\CategoryObserver;
@@ -91,7 +90,7 @@ class Category extends Model implements SluggableInterface
      */
     public function posts()
     {
-        return $this->hasMany(Post::class, 'category_id', 'id');
+        return $this->hasMany($this->getModel('Post'), 'category_id', 'id');
     }
 
     /**
@@ -101,7 +100,7 @@ class Category extends Model implements SluggableInterface
      */
     public function postsCount()
     {
-        return $this->hasOne(Post::class)
+        return $this->hasOne($this->getModel('post'))
             ->selectRaw('category_id, count(*) as aggregate')
             ->groupBy('category_id');
     }
@@ -125,7 +124,7 @@ class Category extends Model implements SluggableInterface
      */
     public function latestPost()
     {
-        return $this->hasOne(Post::class, 'category_id', 'id')->latest()->limit(1);
+        return $this->hasOne($this->getModel('post'), 'category_id', 'id')->latest()->limit(1);
     }
 
     public function scopePopular($query, $descending = true)

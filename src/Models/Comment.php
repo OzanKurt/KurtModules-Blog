@@ -2,7 +2,6 @@
 
 namespace Kurt\Modules\Blog\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Kurt\Modules\Blog\Observers\CommentObserver;
@@ -101,7 +100,7 @@ class Comment extends Model
      */
     public function post()
     {
-        return $this->belongsTo(Post::class, 'post_id', 'id');
+        return $this->belongsTo($this->getModel('post'), 'post_id', 'id');
     }
 
     /**

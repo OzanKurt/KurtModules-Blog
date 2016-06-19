@@ -52,7 +52,21 @@ return [
          * Should comments be approved by default while saving to database.
          */
         'preapproved_comments' => true,
+        
+        /**
+         * The model class that you extend blog module's model.
+         */
+        'custom_models' => [
 
+            'category' => App\Category::class,
+
+            'comment' => App\Comment::class,
+
+            'post' => App\Post::class,
+
+            'tag' => App\Tag::class,
+            
+        ],
     ],
 
     /**

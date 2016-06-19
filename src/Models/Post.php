@@ -5,7 +5,6 @@ namespace Kurt\Modules\Blog\Models;
 use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use Kurt\Modules\Blog\Observers\PostObserver;
@@ -160,7 +159,7 @@ class Post extends Model implements SluggableInterface
      */
     public function category()
     {
-        return $this->belongsTo(Category::class, 'category_id', 'id');
+        return $this->belongsTo($this->getModel('category'), 'category_id', 'id');
     }
 
     /**
@@ -184,7 +183,7 @@ class Post extends Model implements SluggableInterface
      */
     public function comments()
     {
-        return $this->hasMany(Comment::class, 'post_id', 'id');
+        return $this->hasMany($this->getModel('comment'), 'post_id', 'id');
     }
 
     /**
@@ -194,7 +193,7 @@ class Post extends Model implements SluggableInterface
      */
     public function commentsCount()
     {
-        return $this->hasOne(Comment::class)
+        return $this->hasOne($this->getModel('comment'))
             ->selectRaw('post_id, count(*) as aggregate')
             ->groupBy('post_id');
     }
@@ -218,7 +217,7 @@ class Post extends Model implements SluggableInterface
      */
     public function latestComment()
     {
-        return $this->hasOne(Comment::class, 'post_id', 'id')->latest();
+        return $this->hasOne($this->getModel('comment'), 'post_id', 'id')->latest();
     }
 
     /**
@@ -228,7 +227,7 @@ class Post extends Model implements SluggableInterface
      */
     public function tags()
     {
-        return $this->belongsToMany(Tag::class, 'blog_post_tag', 'post_id', 'tag_id');
+        return $this->belongsToMany($this->getModel('tag'), 'blog_post_tag', 'post_id', 'tag_id');
     }
 
     /**
@@ -238,7 +237,7 @@ class Post extends Model implements SluggableInterface
      */
     public function tagsCount()
     {
-        return $this->hasOne(Tag::class)
+        return $this->hasOne($this->getModel('tag'))
             ->selectRaw('post_id, count(*) as aggregate')
             ->groupBy('post_id');
     }
