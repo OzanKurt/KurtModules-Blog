@@ -270,14 +270,14 @@ class Post extends Model implements SluggableInterface
     /**
      * [scopeInCategory description]
      * 
-     * @param  [type] $query [description]
-     * @param  [type] $id    [description]
+     * @param  [type] $query      [description]
+     * @param  [type] $categoryId [description]
      * 
      * @return [type]        [description]
      */
-    public function scopeInCategory($query, $id)
+    public function scopeInCategory($query, $categoryId)
     {
-        $query->where('category_id', '=', $id);
+        $query->where('category_id', '=', $categoryId);
     }
 
     /**
