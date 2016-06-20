@@ -44,11 +44,13 @@ class CategoryObserver extends AbstractObserver
 
     public function deleting($category)
     {
-        if (!$this->modelUsesSoftDeletes()) {
-            $category->posts()->update([
-                'category_id' => null,
-            ]);
+        if (!$this->modelUsesSoftDeletes($category)) {
+            //
         }
+
+        $category->posts()->update([
+            'category_id' => null,
+        ]);
 
         $this->clearCacheTags(CachingCategoriesRepository::class);
     }

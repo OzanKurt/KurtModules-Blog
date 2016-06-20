@@ -41,9 +41,9 @@ class CommentObserver extends AbstractObserver
         //
     }
 
-    public function deleting($post)
+    public function deleting($comment)
     {
-        if (!$this->modelUsesSoftDeletes()) {
+        if (!$this->modelUsesSoftDeletes($comment)) {
             //
         }
     }

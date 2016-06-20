@@ -90,7 +90,7 @@ class Category extends Model implements SluggableInterface
      */
     public function posts()
     {
-        return $this->hasMany($this->getModel('Post'), 'category_id', 'id');
+        return $this->hasMany($this->getModel('post'), 'category_id', 'id');
     }
 
     /**

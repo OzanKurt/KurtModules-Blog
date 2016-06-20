@@ -60,6 +60,7 @@ class Tag extends Model implements SluggableInterface
     protected $fillable = [
         'name',
         'slug',
+        'color',
     ];
 
     /**
@@ -125,21 +126,6 @@ class Tag extends Model implements SluggableInterface
     public function latestPost()
     {
         return $this->posts()->latest()->first();
-    }
-
-    /**
-     * Get tag badge as html.
-     *
-     * @param $routeName
-     *
-     * @return string
-     */
-    public function renderBadge($routeName)
-    {
-        return view('kurtmodules-blog::tags.badge', [
-            'url' => route($routeName, $this->slug),
-            'tag' => $this,
-        ])->render();
     }
 
 }

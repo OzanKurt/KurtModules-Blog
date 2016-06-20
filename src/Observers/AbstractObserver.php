@@ -30,7 +30,11 @@ abstract class AbstractObserver
      */
     protected function clearCacheTags($tags)
     {
-        Cache::tags($tags)->flush();
+        $cacheDriver = config('cache.default');
+
+        if (in_array($cacheDriver, ['memcached', 'redis'])) {
+            Cache::tags($tags)->flush();
+        }
     }
 
     /**

@@ -85,8 +85,6 @@ class BlogServiceProvider extends ServiceProvider
         $this->registerCommands();
 
         $this->registerVendors();
-
-        $this->publishViews();
     }
 
     /**
@@ -194,20 +192,6 @@ class BlogServiceProvider extends ServiceProvider
         $loader = AliasLoader::getInstance();
 
         $loader->alias('Markdown', Markdown::class);
-    }
-
-    /**
-     * Publish views.
-     *
-     * @return void
-     */
-    private function publishViews()
-    {
-        $this->loadViewsFrom($this->basePath.'/resources/views', 'kurtmodules-blog');
-
-        $this->publishes([
-            $this->basePath.'/resources/views' => base_path('resources/views/vendor/kurtmodules-blog'),
-        ]);
     }
 
     /**
