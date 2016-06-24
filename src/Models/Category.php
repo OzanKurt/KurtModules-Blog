@@ -5,8 +5,6 @@ namespace Kurt\Modules\Blog\Models;
 use Cviebrock\EloquentSluggable\SluggableInterface;
 use Cviebrock\EloquentSluggable\SluggableTrait;
 
-use Illuminate\Database\Eloquent\SoftDeletes;
-
 use Kurt\Modules\Blog\Observers\CategoryObserver;
 
 use Kurt\Modules\Core\Traits\GetCountFromRelation;
@@ -33,7 +31,6 @@ class Category extends Model implements SluggableInterface
     use GetCountFromRelation;
     use GetUserModelData;
     use SluggableTrait;
-    use SoftDeletes;
 
     /**
      * EloquentSluggable configuration.

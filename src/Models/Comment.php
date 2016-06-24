@@ -2,8 +2,6 @@
 
 namespace Kurt\Modules\Blog\Models;
 
-use Illuminate\Database\Eloquent\SoftDeletes;
-
 use Kurt\Modules\Blog\Observers\CommentObserver;
 
 use Kurt\Modules\Core\Traits\GetCountFromRelation;
@@ -28,7 +26,6 @@ class Comment extends Model
 {
     use GetCountFromRelation;
     use GetUserModelData;
-    use SoftDeletes;
 
     /**
      * The database table used by the model.
