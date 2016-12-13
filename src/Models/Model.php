@@ -4,7 +4,8 @@ namespace Kurt\Modules\Blog\Models;
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
-class Model extends Eloquent {
+class Model extends Eloquent
+{
 
     private $defaultModels = [
         'category' => Category::class,
@@ -25,5 +26,4 @@ class Model extends Eloquent {
 
         return $customModelClass;
     }
-
 }

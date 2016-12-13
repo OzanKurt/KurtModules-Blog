@@ -118,7 +118,7 @@ class BlogServiceProvider extends ServiceProvider
      */
     private function registerRepositories()
     {
-        $this->app->bind(CategoriesRepositoryInterface::class, function() {
+        $this->app->bind(CategoriesRepositoryInterface::class, function () {
             return $this->instantiateCategoriesRepository();
         });
         $this->app->bind(PostsRepositoryInterface::class, EloquentPostsRepository::class);
@@ -150,7 +150,7 @@ class BlogServiceProvider extends ServiceProvider
     {
         $factory = $this->app->make(Factory::class);
         
-        $factory->define(Category::class, function(Faker $faker) {
+        $factory->define(Category::class, function (Faker $faker) {
             $name = $faker->colorName;
             return [
                 'name' => $name,
@@ -158,7 +158,7 @@ class BlogServiceProvider extends ServiceProvider
             ];
         });
         
-        $factory->define(Post::class, function(Faker $faker) {
+        $factory->define(Post::class, function (Faker $faker) {
             $userIds = $this->getUserModel()->lists('id')->toArray();
             $categoryIds = Category::lists('id')->toArray();
 
@@ -304,6 +304,6 @@ class BlogServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return array('command.ide-helper.generate', 'command.ide-helper.models');
+        return ['command.ide-helper.generate', 'command.ide-helper.models'];
     }
 }

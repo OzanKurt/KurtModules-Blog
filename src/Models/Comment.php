@@ -57,7 +57,7 @@ class Comment extends Model
 
     /**
      * Casts columns to requested types.
-     * 
+     *
      * @var array
      */
     protected $casts = [
@@ -78,7 +78,7 @@ class Comment extends Model
 
     /**
      * Overwrite parents create to set a default approval state.
-     * 
+     *
      * @param static
      */
     public static function create(array $attributes = [])
@@ -116,7 +116,7 @@ class Comment extends Model
 
     /**
      * Get is the comment is approved.
-     * 
+     *
      * @return boolean
      */
     public function isApproved()
@@ -126,7 +126,7 @@ class Comment extends Model
 
     /**
      * Update the comment as approved in the database.
-     * 
+     *
      * @return $this
      */
     public function approve($state = true)
@@ -140,7 +140,7 @@ class Comment extends Model
 
     /**
      * Update the comment as disapproved in the database.
-     * 
+     *
      * @return $this
      */
     public function disapprove()

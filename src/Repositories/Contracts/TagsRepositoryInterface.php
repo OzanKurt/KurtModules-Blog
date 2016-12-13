@@ -20,5 +20,4 @@ interface TagsRepositoryInterface
     public function paginateAll($postsPerPage);
 
     public function paginateAllWithPosts($postsPerPage);
-
 }

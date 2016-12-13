@@ -124,5 +124,4 @@ class Tag extends Model implements SluggableInterface
     {
         return $this->posts()->latest()->first();
     }
-
 }

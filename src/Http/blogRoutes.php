@@ -8,5 +8,4 @@ Route::group([
     Route::get('welcome', function () {
         return 'Welcome!';
     });
-
 });

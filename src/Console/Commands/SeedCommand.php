@@ -29,7 +29,7 @@ class SeedCommand extends Command
 
     /**
      * Default configuration for seeding.
-     * 
+     *
      * @var array
      */
     protected $settings = [
@@ -44,8 +44,7 @@ class SeedCommand extends Command
      */
     public function handle()
     {
-        if ($this->getUserModel()->count() == 0)
-        {
+        if ($this->getUserModel()->count() == 0) {
             $this->info("There is no user in the database, cannot seed.");
 
             $createUsers = $this->ask('Do you want to create some users? (y/N)');
