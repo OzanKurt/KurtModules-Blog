@@ -43,7 +43,7 @@ return [
             'vimeo' => 'default',
             
             /**
-             * `0`, `1`, `2`, `3`, `default`, `hqdefault`, `mqdefault`, `sddefault`, `maxresdefault`, 
+             * `0`, `1`, `2`, `3`, `default`, `hqdefault`, `mqdefault`, `sddefault`, `maxresdefault`,
              */
             'youtube' => 'default',
         ],

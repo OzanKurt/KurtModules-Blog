@@ -253,10 +253,10 @@ class Post extends Model implements SluggableInterface
 
     /**
      * Popularity by view count.
-     * 
+     *
      * @param  [type]  $query      [description]
      * @param  boolean $descending [description]
-     * 
+     *
      * @return [type]              [description]
      */
     public function scopePopular($query, $descending = true)
@@ -266,10 +266,10 @@ class Post extends Model implements SluggableInterface
 
     /**
      * [scopeInCategory description]
-     * 
+     *
      * @param  [type] $query      [description]
      * @param  [type] $categoryId [description]
-     * 
+     *
      * @return [type]        [description]
      */
     public function scopeInCategory($query, $categoryId)
@@ -279,11 +279,11 @@ class Post extends Model implements SluggableInterface
 
     /**
      * [scopeWithTags description]
-     * 
+     *
      * @param  [type]  $query [description]
      * @param  array   $tagIds   Tag id's
      * @param  boolean $and   If `true` posts should have all the given tags
-     * 
+     *
      * @return [type]         [description]
      */
     public function scopeWithTags($query, $tagIds = [], $and = false)
@@ -302,9 +302,9 @@ class Post extends Model implements SluggableInterface
 
     /**
      * Determine if the posts media type is equal to the given type.
-     * 
+     *
      * @param  int  $type One of the constants from this class.
-     * 
+     *
      * @return boolean
      */
     public function isMediaType($type)
@@ -313,10 +313,10 @@ class Post extends Model implements SluggableInterface
     }
 
     /**
-     * Get the media value in a better and fitting type. 
-     * 
+     * Get the media value in a better and fitting type.
+     *
      * @param  string $value
-     * 
+     *
      * @return mixed
      */
     public function getMediaAttribute($value)
@@ -341,8 +341,8 @@ class Post extends Model implements SluggableInterface
     }
 
     /**
-     * Set the media value in a better and fitting type. 
-     * 
+     * Set the media value in a better and fitting type.
+     *
      * @param  mixed $value
      */
     public function setMediaAttribute($value)
@@ -370,7 +370,7 @@ class Post extends Model implements SluggableInterface
 
     /**
      * Get the thumbnail image path of the post.
-     * 
+     *
      * @return string|null
      */
     public function getThumbnailAttribute()
@@ -398,7 +398,7 @@ class Post extends Model implements SluggableInterface
 
     /**
      * Get the thumbnail of youtube video.
-     * 
+     *
      * @return string|null Thumbnail URL.
      */
     public function getVideoTypeAttribute()
@@ -418,7 +418,7 @@ class Post extends Model implements SluggableInterface
 
     /**
      * Get the video id of the post.
-     * 
+     *
      * @return string
      */
     public function getVideoIdAttribute()
@@ -441,7 +441,7 @@ class Post extends Model implements SluggableInterface
 
     /**
      * Get the video thumbnail of the post.
-     * 
+     *
      * @return string
      */
     private function getVideoThumbnail()
@@ -470,7 +470,7 @@ class Post extends Model implements SluggableInterface
 
     /**
      * Get video location url.
-     * 
+     *
      * @return string Url of the video.
      */
     public function getVideoLocationAttribute()
@@ -493,7 +493,7 @@ class Post extends Model implements SluggableInterface
 
     /**
      * Get the html to embed the video.
-     * 
+     *
      * @return string
      */
     public function getVideoEmbedAttribute()

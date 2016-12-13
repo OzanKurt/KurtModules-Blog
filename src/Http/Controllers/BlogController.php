@@ -10,7 +10,7 @@ use Kurt\Modules\Blog\Repositories\Contracts\TagsRepositoryInterface;
 
 /**
  * Class BlogController
- * 
+ *
  * @package Kurt\Modules\Blog\Http\Controllers
  */
 class BlogController extends Controller
@@ -22,7 +22,8 @@ class BlogController extends Controller
     /**
      * Ready up blog repositories.
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->blogCategoriesRepository = app(CategoriesRepositoryInterface::class);
         $this->blogPostsRepository = app(PostsRepositoryInterface::class);
         $this->blogTagsRepository = app(TagsRepositoryInterface::class);
