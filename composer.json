@@ -10,7 +10,7 @@
     }
   ],
   "require": {
-    "ozankurt/modules-core": "^0.1.0",
+    "ozankurt/modules-core": "^0.2",
     "cviebrock/eloquent-sluggable": "^4.2",
     "graham-campbell/markdown": "^7.1"
   },
