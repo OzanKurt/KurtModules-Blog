@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
-use Illuminate\Routing\Router;
 
 use Kurt\Modules\Blog\Console\Commands\SeedCommand;
 use Kurt\Modules\Blog\Models\Category;
@@ -56,15 +55,13 @@ class BlogServiceProvider extends ServiceProvider
     /**
      * Define your route model bindings, pattern filters, etc.
      *
-     * @param \Illuminate\Routing\Router $router
-     *
      * @return void
      */
-    public function boot(Router $router)
+    public function boot()
     {
         //
 
-        parent::boot($router);
+        parent::boot();
     }
 
     /**
@@ -249,7 +246,7 @@ class BlogServiceProvider extends ServiceProvider
                     require $blogRoutesPath;
                 });
             } else {
-                $this->app->make('log')->error('KurtModules-Blog routes file is not published.');
+                // $this->app->make('log')->error('KurtModules-Blog routes file is not published.');
             }
         }
     }
@@ -263,7 +260,6 @@ class BlogServiceProvider extends ServiceProvider
     {
         return $this->app->make('config')->get('kurt_modules.debug');
     }
-
 
     /**
      * Get the `cache` from configurations.
