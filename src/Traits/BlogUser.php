@@ -5,6 +5,8 @@ namespace Kurt\Modules\Blog\Traits;
 use Kurt\Modules\Blog\Models\Comment;
 use Kurt\Modules\Blog\Models\Post;
 
+use Kurt\Modules\Core\Traits\GetCountFromRelation;
+
 /**
  * Gives the user class ability to use the methods related to blogging.
  *

@@ -20,7 +20,7 @@ class Model extends Eloquent {
         $customModelClass = $configModels[$modelKey];
 
         if (is_null($customModelClass)) {
-            return $defaultModels[$modelKey];
+            return $this->defaultModels[$modelKey];
         }
 
         return $customModelClass;

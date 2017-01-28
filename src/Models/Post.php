@@ -10,6 +10,8 @@ use Kurt\Modules\Blog\Observers\PostObserver;
 use Kurt\Modules\Core\Traits\GetCountFromRelation;
 use Kurt\Modules\Core\Traits\GetUserModelData;
 
+use Kurt\Modules\Core\Links;
+
 /**
  * Class Post
  *
@@ -41,6 +43,21 @@ class Post extends Model implements SluggableInterface
     use GetCountFromRelation;
     use GetUserModelData;
     use SluggableTrait;
+
+    /**
+     * Links
+     * 
+     * @var array
+     */
+    private $links = [
+        'index'   => '/blog/categories/{category->id}/posts',
+        'create'  => '/blog/categories/{category->id}/posts/create',
+        'store'   => '/blog/categories/{category->id}/posts',
+        'show'    => '/blog/categories/{category->id}/posts/{id}',
+        'edit'    => '/blog/categories/{category->id}/posts/{id}/edit',
+        'update'  => '/blog/categories/{category->id}/posts/{id}',
+        'destroy' => '/blog/categories/{category->id}/posts/{id}',
+    ];
 
     /**
      * EloquentSluggable configuration.
@@ -99,6 +116,10 @@ class Post extends Model implements SluggableInterface
         3 => Post::TYPE_CAROUSEL,
     ];
 
+    protected $appends = [
+        'links',
+    ];
+
     /**
      * The `media` column will be null.
      */
@@ -137,6 +158,10 @@ class Post extends Model implements SluggableInterface
     const VIDEO_TYPE_VIMEO = 1;
     const VIDEO_TYPE_DAILYMOTION = 2;
 
+    protected $with = [
+        // 'category',
+    ];
+
     /**
      * The "booting" method of the model.
      *
@@ -147,6 +172,11 @@ class Post extends Model implements SluggableInterface
         parent::boot();
 
         self::observe(new PostObserver());
+    }
+
+    public function getLinksAttribute()
+    {
+        return new Links($this, $this->links);
     }
 
     /**
