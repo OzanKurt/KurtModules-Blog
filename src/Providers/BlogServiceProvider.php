@@ -4,6 +4,8 @@ namespace Kurt\Modules\Blog\Providers;
 
 use Carbon\Carbon;
 use Faker\Generator as Faker;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\AliasLoader;
 use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -21,8 +23,6 @@ use Kurt\Modules\Blog\Repositories\Posts\EloquentPostsRepository;
 use Kurt\Modules\Blog\Repositories\Tags\EloquentTagsRepository;
 
 use Kurt\Modules\Core\Traits\GetUserModelData;
-
-use Illuminate\Foundation\AliasLoader;
 
 use GrahamCampbell\Markdown\Facades\Markdown;
 use GrahamCampbell\Markdown\MarkdownServiceProvider;
@@ -238,7 +238,7 @@ class BlogServiceProvider extends ServiceProvider
 
         if (!$this->app->routesAreCached()) {
             if ($this->routesArePublished($blogRoutesPath)) {
-                $router->group([
+                Route::group([
                     'namespace' => $this->namespace,
                 ], function ($router) use ($blogRoutesPath) {
                     require $blogRoutesPath;
