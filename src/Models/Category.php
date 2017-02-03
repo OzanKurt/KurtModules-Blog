@@ -25,7 +25,7 @@ use Kurt\Modules\Core\Traits\GetUserModelData;
  * @property-read \Kurt\Modules\Blog\Models\Post                                            $latestPost
  * @method static \Illuminate\Database\Query\Builder|\Kurt\Modules\Blog\Models\Category whereSlug($slug)
  */
-class Category extends Model implements SluggableInterface
+class Category extends Model
 {
     use GetCountFromRelation;
     use GetUserModelData;

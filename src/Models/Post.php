@@ -37,7 +37,7 @@ use Kurt\Modules\Core\Links;
  * @property-read mixed                                                                        $tags_count
  * @method static \Illuminate\Database\Query\Builder|\Kurt\Modules\Blog\Models\Post whereSlug($slug)
  */
-class Post extends Model implements SluggableInterface
+class Post extends Model
 {
     use GetCountFromRelation;
     use GetUserModelData;
