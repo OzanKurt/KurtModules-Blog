@@ -2,8 +2,7 @@
 
 namespace Kurt\Modules\Blog\Models;
 
-use Cviebrock\EloquentSluggable\SluggableInterface;
-use Cviebrock\EloquentSluggable\SluggableTrait;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 use Kurt\Modules\Blog\Observers\CategoryObserver;
 
@@ -30,17 +29,22 @@ class Category extends Model implements SluggableInterface
 {
     use GetCountFromRelation;
     use GetUserModelData;
-    use SluggableTrait;
+    use Sluggable;
 
     /**
-     * EloquentSluggable configuration.
+     * Return the sluggable configuration array for this model.
      *
-     * @var array
+     * @return array
      */
-    protected $sluggable = [
-        'build_from' => 'name',
-        'on_update'  => true,
-    ];
+    public function sluggable()
+    {
+        return [
+            'slug' => [
+                'source' => 'name',
+                'onUpdate' => true,
+            ]
+        ];
+    }
 
     /**
      * The database table used by the model.

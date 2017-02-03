@@ -2,8 +2,7 @@
 
 namespace Kurt\Modules\Blog\Models;
 
-use Cviebrock\EloquentSluggable\SluggableInterface;
-use Cviebrock\EloquentSluggable\SluggableTrait;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 use Kurt\Modules\Blog\Observers\PostObserver;
 
@@ -42,7 +41,22 @@ class Post extends Model implements SluggableInterface
 {
     use GetCountFromRelation;
     use GetUserModelData;
-    use SluggableTrait;
+    use Sluggable;
+
+    /**
+     * Return the sluggable configuration array for this model.
+     *
+     * @return array
+     */
+    public function sluggable()
+    {
+        return [
+            'slug' => [
+                'source' => 'title',
+                'onUpdate' => true,
+            ]
+        ];
+    }
 
     /**
      * Links
@@ -57,16 +71,6 @@ class Post extends Model implements SluggableInterface
         'edit'    => '/blog/categories/{category->id}/posts/{id}/edit',
         'update'  => '/blog/categories/{category->id}/posts/{id}',
         'destroy' => '/blog/categories/{category->id}/posts/{id}',
-    ];
-
-    /**
-     * EloquentSluggable configuration.
-     *
-     * @var array
-     */
-    protected $sluggable = [
-        'build_from' => 'title',
-        'on_update'  => true,
     ];
 
     /**

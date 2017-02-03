@@ -2,8 +2,7 @@
 
 namespace Kurt\Modules\Blog\Models;
 
-use Cviebrock\EloquentSluggable\SluggableInterface;
-use Cviebrock\EloquentSluggable\SluggableTrait;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 use Kurt\Modules\Blog\Observers\TagObserver;
 
@@ -26,21 +25,26 @@ use Kurt\Modules\Core\Traits\GetUserModelData;
  * @property-read mixed                                                                     $posts_count
  * @method static \Illuminate\Database\Query\Builder|\Kurt\Modules\Blog\Models\Tag whereSlug($slug)
  */
-class Tag extends Model implements SluggableInterface
+class Tag extends Model
 {
     use GetCountFromRelation;
     use GetUserModelData;
-    use SluggableTrait;
+    use Sluggable;
 
     /**
-     * EloquentSluggable configuration.
+     * Return the sluggable configuration array for this model.
      *
-     * @var array
+     * @return array
      */
-    protected $sluggable = [
-        'build_from' => 'name',
-        'on_update'  => true,
-    ];
+    public function sluggable()
+    {
+        return [
+            'slug' => [
+                'source' => 'name',
+                'onUpdate' => true,
+            ]
+        ];
+    }
 
     /**
      * The database table used by the model.
