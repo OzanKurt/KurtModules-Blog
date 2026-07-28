@@ -10,9 +10,12 @@ use Kurt\Modules\Blog\Events\PostCreated;
 use Kurt\Modules\Blog\Events\PostPublished;
 use Kurt\Modules\Blog\Events\PostUpdated;
 use Kurt\Modules\Blog\Models\Post;
+use Kurt\Modules\Blog\Observers\Concerns\InvalidatesBlogCache;
 
 final class PostObserver
 {
+    use InvalidatesBlogCache;
+
     public function saving(Post $post): void
     {
         // Backfill the publish timestamp when a post is set Published without
@@ -28,6 +31,12 @@ final class PostObserver
     public function created(Post $post): void
     {
         PostCreated::dispatch($post);
+
+        // A new post can appear in the aggregate reads, and its slug/id may
+        // have been negatively cached before it existed.
+        $this->forgetSitemap();
+        $this->forgetFeed();
+        $this->forgetPost($post);
     }
 
     public function updated(Post $post): void
@@ -39,6 +48,13 @@ final class PostObserver
 
         if (! $viewOnly) {
             PostUpdated::dispatch($post);
+
+            // A real content edit (or a publish/archive transition) invalidates
+            // the by-slug entry and the aggregate reads. A view-only bump busts
+            // nothing, so view_count stays a tick stale by design.
+            $this->forgetPost($post);
+            $this->forgetSitemap();
+            $this->forgetFeed();
         }
 
         if ($post->wasChanged('status')) {
@@ -48,5 +64,12 @@ final class PostObserver
                 default => null,
             };
         }
+    }
+
+    public function deleted(Post $post): void
+    {
+        $this->forgetPost($post);
+        $this->forgetSitemap();
+        $this->forgetFeed();
     }
 }
