@@ -72,4 +72,15 @@ return [
             'tags' => 'weekly',
         ],
     ],
+
+    // Module cache convention (Core ModuleCacheFactory). Wraps the safe read
+    // paths (sitemap, feed, post-by-slug) in a config-driven cache scoped by
+    // the `blog` prefix and busted from the module's observers. `store` is
+    // selected by name (null = default store) so `config:cache` stays safe.
+    'cache' => [
+        'enabled' => (bool) env('BLOG_CACHE_ENABLED', true),
+        'store' => env('BLOG_CACHE_STORE'),
+        'prefix' => 'blog',
+        'ttl' => (int) env('BLOG_CACHE_TTL', 3600),
+    ],
 ];

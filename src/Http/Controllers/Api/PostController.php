@@ -6,6 +6,7 @@ namespace Kurt\Modules\Blog\Http\Controllers\Api;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -14,12 +15,14 @@ use Kurt\Modules\Blog\Http\Requests\StorePostRequest;
 use Kurt\Modules\Blog\Http\Requests\UpdatePostRequest;
 use Kurt\Modules\Blog\Http\Resources\PostResource;
 use Kurt\Modules\Blog\Models\Post;
+use Kurt\Modules\Blog\Support\Concerns\ResolvesBlogCache;
 use Kurt\Modules\Core\Http\Concerns\HandlesApiQuery;
 use Kurt\Modules\Core\Http\Controllers\ApiController;
 
 final class PostController extends ApiController
 {
     use HandlesApiQuery;
+    use ResolvesBlogCache;
 
     /**
      * Paginated list of posts. Guests and non-staff readers only see published
@@ -171,11 +174,27 @@ final class PostController extends ApiController
         return $this->respond(PostResource::collection($related));
     }
 
+    /**
+     * Resolve a post by id or slug, memoising the lookup under `post:{key}`.
+     * Negative lookups are cached too (Core's null sentinel), so a missing
+     * post is translated back into the same 404 `firstOrFail()` would raise.
+     * The by-slug entry is intentionally busted only on a real content edit
+     * (see PostObserver): a view-count bump leaves it a tick stale by design.
+     */
     private function resolvePost(string $key): Post
     {
-        return Post::query()
-            ->where(fn (Builder $q) => $q->where('id', $key)->orWhere('slug', $key))
-            ->firstOrFail();
+        $post = $this->blogCache()->remember(
+            "post:{$key}",
+            fn (): ?Post => Post::query()
+                ->where(fn (Builder $q) => $q->where('id', $key)->orWhere('slug', $key))
+                ->first(),
+        );
+
+        if (! $post instanceof Post) {
+            throw (new ModelNotFoundException)->setModel(Post::class);
+        }
+
+        return $post;
     }
 
     /**

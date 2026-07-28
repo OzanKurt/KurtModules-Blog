@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use Kurt\Modules\Blog\Models\Category;
 use Kurt\Modules\Blog\Models\Post;
 use Kurt\Modules\Blog\Models\Tag;
+use Kurt\Modules\Blog\Support\Concerns\ResolvesBlogCache;
 
 /**
  * Produces sitemap entries for the blog's public content: every published
@@ -20,6 +21,8 @@ use Kurt\Modules\Blog\Models\Tag;
  */
 final class SitemapBuilder
 {
+    use ResolvesBlogCache;
+
     private bool $includeTags = false;
 
     private ?Closure $postLink = null;
@@ -70,11 +73,49 @@ final class SitemapBuilder
      */
     public function entries(): Collection
     {
-        return new Collection([
+        return new Collection($this->buildEntries());
+    }
+
+    /**
+     * The (optionally cached) sitemap entries. Only the default-resolver build
+     * is cached: a caller with custom link closures produces caller-specific
+     * URLs, so it always recomputes rather than sharing (or poisoning) the
+     * module-wide key. The `includeTags` variant is cached under its own key.
+     *
+     * @return array<int, SitemapEntry>
+     */
+    private function buildEntries(): array
+    {
+        if (! $this->cacheable()) {
+            return $this->computeEntries();
+        }
+
+        /** @var array<int, SitemapEntry> */
+        return $this->blogCache()->remember($this->cacheKey(), fn (): array => $this->computeEntries());
+    }
+
+    /**
+     * @return array<int, SitemapEntry>
+     */
+    private function computeEntries(): array
+    {
+        return [
             ...$this->postEntries(),
             ...$this->categoryEntries(),
             ...($this->includeTags ? $this->tagEntries() : []),
-        ]);
+        ];
+    }
+
+    private function cacheable(): bool
+    {
+        return $this->postLink === null
+            && $this->categoryLink === null
+            && $this->tagLink === null;
+    }
+
+    private function cacheKey(): string
+    {
+        return $this->includeTags ? 'sitemap:tags' : 'sitemap';
     }
 
     /**

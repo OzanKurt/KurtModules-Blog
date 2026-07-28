@@ -53,7 +53,7 @@ final class BlogServiceProvider extends PackageServiceProvider
             ->hasCommands($commands);
     }
 
-    protected function moduleManifest(): ?ModuleManifest
+    protected function moduleManifest(): ModuleManifest
     {
         return ModuleManifest::make('blog')
             ->name('Blog')

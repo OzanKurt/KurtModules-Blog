@@ -10,6 +10,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Kurt\Modules\Blog\Models\Category;
 use Kurt\Modules\Blog\Models\Post;
+use Kurt\Modules\Blog\Support\Concerns\ResolvesBlogCache;
 
 /**
  * Builds feed data for the latest published posts. Headless by design: it
@@ -24,6 +25,8 @@ use Kurt\Modules\Blog\Models\Post;
  */
 final class FeedBuilder
 {
+    use ResolvesBlogCache;
+
     private int $limit;
 
     private ?Category $category = null;
@@ -99,9 +102,27 @@ final class FeedBuilder
      * The published posts backing the feed, newest first. Category is eager
      * loaded so rendering item `<category>` never triggers an N+1.
      *
+     * Only the canonical feed (no category filter, default limit) is cached
+     * under the module-wide `feed` key that the observers bust; category- or
+     * limit-scoped variants recompute so they never collide with, or serve
+     * stale data from, that shared key.
+     *
      * @return Collection<int, Post>
      */
     public function posts(): Collection
+    {
+        if (! $this->cacheable()) {
+            return $this->queryPosts();
+        }
+
+        /** @var Collection<int, Post> */
+        return $this->blogCache()->remember('feed', fn (): Collection => $this->queryPosts());
+    }
+
+    /**
+     * @return Collection<int, Post>
+     */
+    private function queryPosts(): Collection
     {
         $query = Post::query()
             ->with('category')
@@ -116,6 +137,12 @@ final class FeedBuilder
             ->orderByDesc('id')
             ->limit($this->limit)
             ->get();
+    }
+
+    private function cacheable(): bool
+    {
+        return $this->category === null
+            && $this->limit === max(1, (int) config('blog.feed.limit', 20));
     }
 
     /**
