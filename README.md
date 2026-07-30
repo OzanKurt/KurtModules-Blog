@@ -6,7 +6,7 @@ Headless blog module for Laravel: posts, categories, tags, comments, scheduled p
 
 - PHP 8.4+
 - Laravel 13.x
-- `ozankurt/laravel-modules-core` v2.2+ (ships the API kit)
+- `ozankurt/laravel-modules-core` v2.x (ships the API kit)
 
 ## Installation
 
@@ -116,7 +116,7 @@ uses. Per-type change frequencies live under the `sitemap` key in
 ## API
 
 The module ships an out-of-the-box JSON REST API built on the Core API kit
-(`ozankurt/laravel-modules-core` v2.2+). It is **safe by default**: nothing is
+(`ozankurt/laravel-modules-core` v2.x). It is **safe by default**: nothing is
 registered until you opt in.
 
 ### Enabling
