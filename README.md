@@ -5,7 +5,7 @@ Headless blog module for Laravel: posts, categories, tags, comments, scheduled p
 ## Requirements
 
 - PHP 8.4+
-- Laravel 12.x or 13.x
+- Laravel 13.x
 - `ozankurt/laravel-modules-core` v2.2+ (ships the API kit)
 
 ## Installation
