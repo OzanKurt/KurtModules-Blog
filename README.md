@@ -1,11 +1,13 @@
 # laravel-modules-blog
 
+[![tests](https://github.com/OzanKurt/laravel-modules-blog/actions/workflows/tests.yml/badge.svg)](https://github.com/OzanKurt/laravel-modules-blog/actions/workflows/tests.yml)
+
 Headless blog module for Laravel: posts, categories, tags, comments, scheduled publishing, SEO meta, translatable content, Spatie medialibrary.
 
 ## Requirements
 
-- PHP 8.4+
-- Laravel 13.x
+- PHP `^8.4`
+- Laravel `^13.0`
 - `ozankurt/laravel-modules-core` v2.x (ships the API kit)
 
 ## Installation
@@ -235,6 +237,19 @@ What the resources give you:
   swatch column.
 - **Comments** — a moderation queue defaulting to pending, with approve/reject
   row actions and approve/reject/delete bulk actions.
+
+## Testing
+
+```bash
+composer install
+vendor/bin/pint --test
+vendor/bin/phpstan analyse --memory-limit=2G
+vendor/bin/pest
+```
+
+CI runs the same checks on every push and pull request
+(`.github/workflows/tests.yml`), against PHP 8.4 / Laravel 13. Static analysis
+is held at **PHPStan level 8**; the suite runs on **Pest 5**.
 
 ## License
 
